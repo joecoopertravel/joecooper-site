@@ -1474,10 +1474,13 @@
     clearComposer(); chatLog.innerHTML = ''; msg.textContent = '';
     reqNow.hidden = false;
     const live = ok => ok && t === chatToken;
-    const preset = form.from.value && form.to.value;
+    // A route or destination may already be filled in (route buttons, or a link from an email).
+    const hasFrom = !!form.from.value.trim(), hasTo = !!form.to.value.trim();
 
-    if (!live(await say(preset
+    if (!live(await say(hasFrom && hasTo
       ? `Hi! I'm Joe's travel concierge ✈️<br>Great choice: <b>${esc(form.from.value)} → ${esc(form.to.value)}</b>. What kind of trip is it?`
+      : hasTo
+      ? `Hi! I'm Joe's travel concierge ✈️<br>Let's find you business class to <b>${esc(form.to.value)}</b>. What kind of trip is it?`
       : "Hi! I'm Joe's travel concierge ✈️<br>I'll help you get the best business class options. What kind of trip are you planning?", t))) return;
     const trip = await choose(['Round trip', 'One way', 'Multi-city']);
     if (t !== chatToken) return;
@@ -1485,13 +1488,23 @@
     syncTrip();
     const round = trip === 'Round trip';
 
-    if (!preset) {
+    if (!hasFrom) {
       if (!live(await say(trip === 'Multi-city' ? 'Where does your first flight leave from? Type a city or airport.' : 'Where are you flying from? Type a city or airport.', t))) return;
       await field(wrapOf(form.from), { input: form.from, t, validate: () => form.from.value.trim(), err: 'Please type a city or airport.' });
       if (t !== chatToken) return;
+    }
+    if (!hasTo) {
       if (!live(await say('And where would you like to go?', t))) return;
       await field(wrapOf(form.to), { input: form.to, t, validate: () => form.to.value.trim(), err: 'Please type your destination.' });
       if (t !== chatToken) return;
+    } else if (/^(Europe|Asia|Australia|Africa|Middle East|South America|Caribbean)$/i.test(form.to.value.trim())) {
+      // A region from an email button: ask for the exact city.
+      if (!live(await say(`Which city in ${esc(form.to.value.trim())}? (You can type “not sure yet”.)`, t))) return;
+      const region = form.to.value.trim();
+      form.to.value = '';
+      await field(wrapOf(form.to), { input: form.to, t, validate: () => form.to.value.trim(), err: 'Just type a city, or “not sure yet”.' });
+      if (t !== chatToken) return;
+      if (/not sure/i.test(form.to.value)) form.to.value = `${region} (city not decided)`;
     }
 
     if (!live(await say(round ? 'When would you like to fly out, and when are you coming back? Tap your departure, then your return date, and press <b>Confirm dates</b>.'
@@ -1620,6 +1633,16 @@
     document.body.classList.toggle('req-sent', sheet.classList.contains('sent'));
     if (sheet.classList.contains('sent')) { chatStarted = false; if (sendingDots) { sendingDots.remove(); sendingDots = null; } }
   }).observe(sheet, { attributes: true, attributeFilter: ['class'] });
+
+  // Links from emails: joecooper.travel/?quote=1&to=Europe opens the request chat straight away.
+  (function () {
+    const qp = new URLSearchParams(location.search);
+    if (!qp.has('quote')) return;
+    if (qp.get('from')) form.from.value = qp.get('from').slice(0, 80);
+    if (qp.get('to')) form.to.value = qp.get('to').slice(0, 80);
+    loadAirports();
+    setTimeout(() => openQuote(null), 600);
+  })();
 
   document.getElementById('toChat').addEventListener('click', () => {
     form.classList.add('chat-mode');
