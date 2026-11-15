@@ -993,6 +993,14 @@
       });
       const j = await r.json();
       if (!j.success) throw new Error('web3forms');
+      // Telegram alert through the Cloudflare Worker, which keeps the bot token private.
+      // Best effort only: the email above is the main channel.
+      fetch('https://joecooper-leads.sales-41f.workers.dev/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields),
+        keepalive: true
+      }).catch(() => {});
       document.getElementById('refNo').textContent = ref;
       sheet.classList.add('sent');
       sheet.scrollTop = 0;
