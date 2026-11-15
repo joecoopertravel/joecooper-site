@@ -350,9 +350,17 @@
   .cal{padding:12px 14px 12px}
   .cal-top{margin-bottom:2px}
   .cal-m h4{margin:0 0 4px;font-size:13px}
-  .cal-grid{row-gap:0}
-  .cal-grid .wd{padding:2px 0}
-  .cal-grid .d{height:31px;font-size:13.5px}
+  #cal .cal-grid{row-gap:0}
+  #cal .cal-grid .wd{padding:2px 0}
+  #cal .cal-grid .d{height:31px;font-size:13.5px}
+  /* Kayak-style flexibility menus at the top */
+  .cal-flexbar{display:flex;justify-content:flex-end;gap:18px;flex-wrap:wrap;padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid #efe9dc}
+  .flexsel{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--navy);cursor:pointer;margin:0}
+  .flexsel b{font-weight:600}
+  .flexsel select{appearance:none;-webkit-appearance:none;border:0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23b8862f' stroke-width='1.8'/%3E%3C/svg%3E") right 2px center/11px no-repeat;
+                  padding:3px 18px 3px 4px;font:500 13px Inter,sans-serif;color:#9a6f22;cursor:pointer;border-radius:4px}
+  .flexsel select:hover,.flexsel select:focus{background-color:#f6efe0;outline:none}
+  @media(max-width:600px){.cal-flexbar{justify-content:space-between}}
   .cal-flex{margin-top:8px;padding-top:8px}
   .cal-flex .lbl{margin-bottom:4px}
   .flex-row{margin-top:5px}
@@ -926,7 +934,13 @@
     [dep, ret].forEach(inp => {
       const n = flexDays(inp);
       if (inp.value) for (let k = 1; k <= n; k++) { flexSet.add(addDays(inp.value, k)); flexSet.add(addDays(inp.value, -k)); }
-    });    let html = `<div class="cal-top"><span class="cal-step">${phase === 'depart' ? 'Select departure' : 'Select return'}</span>
+    });
+    // Kayak-style flexibility: a small "exact ▾" menu per date, at the top of the calendar.
+    const flexSel = (inp, title) => `<label class="flexsel"><b>${title}</b><select data-for="${inp === dep ? 'dep' : 'ret'}" aria-label="${title} flexibility">`
+      + FLEX.map(f => `<option value="${f[0]}" ${f[0] === flexOf(inp).value ? 'selected' : ''}>${f[2] ? f[1] : 'exact'}</option>`).join('')
+      + '</select></label>';
+    let html = `<div class="cal-flexbar">${flexSel(dep, 'Departure')}${round ? flexSel(ret, 'Return') : ''}</div>
+      <div class="cal-top"><span class="cal-step">${phase === 'depart' ? 'Select departure' : 'Select return'}</span>
       <span class="cal-nav"><button type="button" data-nav="-1" aria-label="Previous month" ${canPrev ? '' : 'disabled'}>‹</button><button type="button" data-nav="1" aria-label="Next month" ${canNext ? '' : 'disabled'}>›</button></span></div><div class="cal-months">`;
     for (let k = 0; k < months; k++) {
       const m = new Date(view.getFullYear(), view.getMonth() + k, 1);
@@ -943,12 +957,7 @@
       }
       html += '</div></div>';
     }
-    const chipRow = (inp, title) => `<div class="flex-row"><span class="fr-l">${title}</span><div class="chips">`
-      + FLEX.map(f => `<button type="button" data-flex="${f[0]}" data-for="${inp === dep ? 'dep' : 'ret'}" class="${f[0] === flexOf(inp).value ? 'on' : ''}">${f[1]}</button>`).join('')
-      + '</div></div>';
-    html += `</div><div class="cal-flex"><div class="lbl"><b>Date flexibility</b> · more flexibility often means a better fare</div>`
-      + chipRow(dep, 'Departure') + (round ? chipRow(ret, 'Return') : '')
-      + `</div><div class="cal-foot"><button type="button" class="clear" data-act="clear">Clear dates</button>
+    html += `</div><div class="cal-foot"><button type="button" class="clear" data-act="clear">Clear dates</button>
          ${doneButton(round)}</div>`;
     cal.innerHTML = html;
   }
@@ -989,7 +998,6 @@
     if (!b || b.disabled) return;
     if (b.dataset.d) pickDay(b.dataset.d);
     else if (b.dataset.nav) { view = new Date(view.getFullYear(), view.getMonth() + Number(b.dataset.nav), 1); renderCal(); }
-    else if (b.dataset.flex) { (b.dataset.for === 'ret' ? flexRet : flexDep).value = b.dataset.flex; renderCal(); renderFields(); }
     else if (b.dataset.act === 'clear') { dep.value = ''; ret.value = ''; phase = 'depart'; renderCal(); renderFields(); }
     else if (b.dataset.act === 'done') {
       if (form.classList.contains('chat-mode') && chatDatesNext) { chatDatesNext(); return; }
@@ -1001,6 +1009,12 @@
   returnBtn.addEventListener('click', () => (!cal.hidden && phase === 'return') ? closeCal() : openCal('return'));
   document.getElementById('dates').addEventListener('keydown', e => {
     if (e.key === 'Escape' && !cal.hidden) { e.stopPropagation(); closeCal(); (phase === 'return' ? returnBtn : departBtn).focus(); }
+  });
+  cal.addEventListener('change', e => {
+    const s = e.target.closest('select[data-for]');
+    if (!s) return;
+    (s.dataset.for === 'ret' ? flexRet : flexDep).value = s.value;
+    renderCal(); renderFields();
   });
   // In the chat the calendar stays open until the dates are confirmed.
   document.addEventListener('mousedown', e => { if (!cal.hidden && !e.target.closest('#dates') && !form.classList.contains('chat-mode')) closeCal(); });
