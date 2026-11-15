@@ -340,7 +340,24 @@
   .chat .dates{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .chat .dates > .f > label{position:static;width:auto;height:auto;clip:auto;font-size:12px;margin-bottom:4px}
   .chat #cal{position:static;width:auto;max-width:none;box-shadow:none;margin-top:10px;animation:none;grid-column:1/-1}
-  .chat .cal-foot .done{display:none}
+  .chat .cal-foot{flex-direction:column-reverse;align-items:stretch;gap:8px}
+  .chat .cal-foot .done{width:100%;padding:13px;font-size:15px}
+  .chat .cal-foot .clear{align-self:flex-start}
+  .cal-foot .done:disabled{background:#e7e1d3;color:#9aa3af;cursor:default}
+  .cal-foot .done.ready{animation:readyPulse 1.6s ease-out 2}
+  @keyframes readyPulse{0%{box-shadow:0 0 0 0 rgba(212,168,83,.6)}100%{box-shadow:0 0 0 12px rgba(212,168,83,0)}}
+  /* compact calendar */
+  .cal{padding:12px 14px 12px}
+  .cal-top{margin-bottom:2px}
+  .cal-m h4{margin:0 0 4px;font-size:13px}
+  .cal-grid{row-gap:0}
+  .cal-grid .wd{padding:2px 0}
+  .cal-grid .d{height:31px;font-size:13.5px}
+  .cal-flex{margin-top:8px;padding-top:8px}
+  .cal-flex .lbl{margin-bottom:4px}
+  .flex-row{margin-top:5px}
+  .chips button{padding:5px 11px;font-size:12.5px}
+  .cal-foot{margin-top:10px}
   .switch{background:none;border:0;color:#8a919c;font:12px Inter,sans-serif;text-decoration:underline;cursor:pointer;align-self:center;padding:0;grid-column:1/-1;justify-self:start}
   .send-final{width:100%;justify-content:center;padding:16px;font:600 16px Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase}
   .chat .fine-c{font-size:12px;color:#8a919c;margin-top:8px;line-height:1.5}
@@ -798,6 +815,8 @@
         <select id="pax" name="travelers"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></div>
       <div class="f"><label for="cabin">Cabin</label>
         <select id="cabin" name="cabin"><option>Business</option><option>First</option><option>Premium economy</option></select></div>
+      <div class="f full"><label for="budget">Budget, or an offer you've already seen <i>(optional, it helps me beat it)</i></label>
+        <input id="budget" name="budget" placeholder="e.g. $4,000 per person, or $3,200 on Delta.com"></div>
       <div class="f full"><label for="notes">Notes <i id="notesHint">(optional: flexible dates, other cities, preferred airline)</i></label><textarea id="notes" name="notes" rows="2"></textarea></div>
 
       <div class="legend">Your details</div>
@@ -930,8 +949,17 @@
     html += `</div><div class="cal-flex"><div class="lbl"><b>Date flexibility</b> · more flexibility often means a better fare</div>`
       + chipRow(dep, 'Departure') + (round ? chipRow(ret, 'Return') : '')
       + `</div><div class="cal-foot"><button type="button" class="clear" data-act="clear">Clear dates</button>
-         <button type="button" class="done" data-act="done">${round && dep.value && !ret.value ? 'Next' : 'Done'}</button></div>`;
+         ${doneButton(round)}</div>`;
     cal.innerHTML = html;
+  }
+  // The calendar's main button always says what happens next.
+  function doneButton(round) {
+    const complete = dep.value && (!round || ret.value);
+    if (!form.classList.contains('chat-mode')) {
+      return `<button type="button" class="done" data-act="done">${round && dep.value && !ret.value ? 'Next' : 'Done'}</button>`;
+    }
+    const label = !dep.value ? 'Pick your departure date' : !complete ? 'Now pick your return date' : 'Confirm dates →';
+    return `<button type="button" class="done${complete ? ' ready' : ''}" data-act="done" ${complete ? '' : 'disabled'}>${label}</button>`;
   }
   function openCal(which) {
     phase = which === 'return' && dep.value && form.trip.value === 'Round trip' ? 'return' : 'depart';
@@ -964,6 +992,7 @@
     else if (b.dataset.flex) { (b.dataset.for === 'ret' ? flexRet : flexDep).value = b.dataset.flex; renderCal(); renderFields(); }
     else if (b.dataset.act === 'clear') { dep.value = ''; ret.value = ''; phase = 'depart'; renderCal(); renderFields(); }
     else if (b.dataset.act === 'done') {
+      if (form.classList.contains('chat-mode') && chatDatesNext) { chatDatesNext(); return; }
       if (form.trip.value === 'Round trip' && dep.value && !ret.value) { phase = 'return'; renderCal(); renderFields(); }
       else { closeCal(); form.travelers.focus(); }
     }
@@ -973,7 +1002,8 @@
   document.getElementById('dates').addEventListener('keydown', e => {
     if (e.key === 'Escape' && !cal.hidden) { e.stopPropagation(); closeCal(); (phase === 'return' ? returnBtn : departBtn).focus(); }
   });
-  document.addEventListener('mousedown', e => { if (!cal.hidden && !e.target.closest('#dates')) closeCal(); });
+  // In the chat the calendar stays open until the dates are confirmed.
+  document.addEventListener('mousedown', e => { if (!cal.hidden && !e.target.closest('#dates') && !form.classList.contains('chat-mode')) closeCal(); });
   window.addEventListener('resize', () => { if (!cal.hidden) renderCal(); });
   syncTrip();
 
@@ -1306,10 +1336,10 @@
   const composer = document.getElementById('composer');
   const wrapOf = el => el.closest('.f');
   const datesEl = document.getElementById('dates');
-  const movable = [wrapOf(form.from), wrapOf(form.to), datesEl, wrapOf(form.notes), wrapOf(form.name), wrapOf(form.email), wrapOf(form.phone)];
+  const movable = [wrapOf(form.from), wrapOf(form.to), datesEl, wrapOf(form.budget), wrapOf(form.notes), wrapOf(form.name), wrapOf(form.email), wrapOf(form.phone)];
   const home = new Map(movable.map(n => [n, { parent: n.parentNode, next: n.nextSibling }]));
   const ICON_GO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-  let chatToken = 0, chatStarted = false;
+  let chatToken = 0, chatStarted = false, chatDatesNext = null;
 
   function sendHome() { movable.forEach(n => { const h = home.get(n); if (n.parentNode !== h.parent || n.nextSibling !== h.next) h.parent.insertBefore(n, h.next); }); }
   function clearComposer() { sendHome(); composer.innerHTML = ''; }
@@ -1357,9 +1387,11 @@
       clearComposer();
       const row = document.createElement('div'); row.className = 'crow';
       row.appendChild(node);
+      // The dates step is confirmed with the big button inside the calendar, not a side arrow.
+      const isDates = node === datesEl;
       const go = document.createElement('button');
       go.type = 'button'; go.className = 'go-btn'; go.setAttribute('aria-label', 'Next'); go.innerHTML = ICON_GO;
-      row.appendChild(go);
+      if (!isDates) row.appendChild(go);
       composer.appendChild(row);
       const acts = document.createElement('div'); acts.className = 'cactions';
       acts.innerHTML = (optional ? `<button type="button" class="linkish" data-skip>${skipLabel}</button>` : '<span></span>') + '<span></span>';
@@ -1369,13 +1401,15 @@
       const on = { signal: ac.signal };
       const done = text => {
         if (ac.signal.aborted || t !== chatToken) return;
-        ac.abort(); clearComposer(); addMe(text); res(text);
+        ac.abort(); if (isDates) chatDatesNext = null;
+        clearComposer(); addMe(text); res(text);
       };
       function next() {
         if (!validate()) { addBot(err); if (input) input.focus(); return; }
         done(answer ? answer() : input.value.trim());
       }
       go.addEventListener('click', next, on);
+      if (isDates) chatDatesNext = next;
       if (optional) acts.querySelector('[data-skip]').addEventListener('click', () => { if (input) input.value = ''; done(skipLabel); }, on);
       if (input) {
         input.addEventListener('picked', next, on);
@@ -1419,9 +1453,9 @@
       if (t !== chatToken) return;
     }
 
-    if (!live(await say(round ? 'When would you like to fly out, and when are you coming back? You can add flexibility for each date.'
-      : trip === 'One way' ? 'What date would you like to fly? You can add flexibility too.'
-      : "When does your first flight leave? You'll list the other legs in a moment.", t))) return;
+    if (!live(await say(round ? 'When would you like to fly out, and when are you coming back? Tap your departure, then your return date, and press <b>Confirm dates</b>.'
+      : trip === 'One way' ? 'What date would you like to fly? Tap it in the calendar, then press <b>Confirm dates</b>.'
+      : "When does your first flight leave? Tap the date, then press <b>Confirm dates</b>. You'll list the other legs in a moment.", t))) return;
     await field(datesEl, { t, onShow: () => openCal('depart'), answer: datesText,
       validate: () => dep.value && (!round || ret.value),
       err: round ? 'Please pick both your departure and return dates in the calendar.' : 'Please pick a date in the calendar.' });
@@ -1435,6 +1469,21 @@
     if (!live(await say('Which cabin would you like?', t))) return;
     form.cabin.value = await choose(['Business', 'First', 'Premium economy']);
     if (t !== chatToken) return;
+
+    // Budget, asked gently: a fare they've already seen is the best target to beat.
+    if (!live(await say('Do you have a budget in mind, or have you already seen a fare somewhere? No pressure, it simply helps me find you something better. 🙂', t))) return;
+    const bType = await choose(["I've seen an offer", 'I have a budget', 'Not yet']);
+    if (t !== chatToken) return;
+    form.budget.value = '';
+    if (bType !== 'Not yet') {
+      const offer = bType === "I've seen an offer";
+      if (!live(await say(offer ? 'Great, what did you see? The price, and where if you remember (e.g. “$3,200 on Delta.com”).'
+        : 'Thank you! Roughly what budget, per person or in total?', t))) return;
+      form.budget.placeholder = offer ? 'e.g. $3,200 on Delta.com' : 'e.g. $4,000 per person';
+      await field(wrapOf(form.budget), { input: form.budget, t, validate: () => form.budget.value.trim(), err: 'Just a rough number is fine.' });
+      if (t !== chatToken) return;
+      form.budget.value = (offer ? 'Offer seen: ' : 'Budget: ') + form.budget.value.trim();
+    }
 
     if (trip === 'Multi-city') {
       if (!live(await say('Please list your other flights, e.g. “Paris → Rome, Jun 12”.', t))) return;
@@ -1459,7 +1508,8 @@
     if (t !== chatToken) return;
 
     const rows = [['Trip', trip], ['Route', `${form.from.value} → ${form.to.value}`], ['Dates', datesText()],
-      ['Travelers', form.travelers.value], ['Cabin', form.cabin.value], form.notes.value.trim() && ['Notes', form.notes.value.trim()],
+      ['Travelers', form.travelers.value], ['Cabin', form.cabin.value], form.budget.value.trim() && ['Budget', form.budget.value.trim()],
+      form.notes.value.trim() && ['Notes', form.notes.value.trim()],
       ['Name', form.name.value.trim()], ['Email', form.email.value.trim()], form.phone.value.trim() && ['Phone', form.phone.value.trim()]].filter(Boolean);
     if (!live(await say("Here's your request. Shall I send it to Joe?", t))) return;
     const sum = addBot(rows.map(([k, v]) => `<div><span>${k}</span><b>${esc(v)}</b></div>`).join(''));
