@@ -367,6 +367,8 @@
   .chips button{padding:5px 11px;font-size:12.5px}
   .cal-foot{margin-top:10px}
   .switch{background:none;border:0;color:#8a919c;font:12px Inter,sans-serif;text-decoration:underline;cursor:pointer;align-self:center;padding:0;grid-column:1/-1;justify-self:start}
+  .req-now{width:100%;justify-content:center;padding:13px;font:600 15px Oswald,sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-top:2px}
+  .req-now[hidden]{display:none}
   .send-final{width:100%;justify-content:center;padding:16px;font:600 16px Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase}
   .chat .fine-c{font-size:12px;color:#8a919c;margin-top:8px;line-height:1.5}
   .sheet.sent .chat{display:none}
@@ -795,7 +797,7 @@
       <div class="chat" id="chat">
         <div class="log" id="chatLog" aria-live="polite"></div>
         <div class="composer" id="composer"></div>
-        <button type="button" class="switch" id="toClassic">Prefer a classic form?</button>
+        <button type="button" class="btn btn-gold req-now" id="reqNow">Request</button>
       </div>
       <button type="button" class="switch full" id="toChat">Prefer chatting? Switch to the concierge chat</button>
 
@@ -1162,14 +1164,20 @@
   form.addEventListener('submit', async e => {
     e.preventDefault();
     msg.textContent = '';
-    if (!form.checkValidity()) {
-      const bad = form.querySelector(':invalid');
-      msg.textContent = bad.type === 'email' && bad.value ? 'Please enter a valid email address.' : 'Please fill in the highlighted fields.';
-      bad.focus();
-      return;
+    // A quick request from the chat's REQUEST button only needs a name and email; the rest is sent as far as it was filled in.
+    const quick = form.dataset.quick === '1';
+    if (quick) {
+      if (!form.name.value.trim() || !form.email.value.trim() || !form.email.checkValidity()) { msg.textContent = 'I just need your name and a valid email to send it.'; return; }
+    } else {
+      if (!form.checkValidity()) {
+        const bad = form.querySelector(':invalid');
+        msg.textContent = bad.type === 'email' && bad.value ? 'Please enter a valid email address.' : 'Please fill in the highlighted fields.';
+        bad.focus();
+        return;
+      }
+      if (!dep.value) { msg.textContent = 'Please choose your departure date.'; openCal('depart'); return; }
+      if (form.trip.value === 'Round trip' && !ret.value) { msg.textContent = 'Please choose a return date.'; openCal('return'); return; }
     }
-    if (!dep.value) { msg.textContent = 'Please choose your departure date.'; openCal('depart'); return; }
-    if (form.trip.value === 'Round trip' && !ret.value) { msg.textContent = 'Please choose a return date.'; openCal('return'); return; }
     const btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
     btn.textContent = 'Sending…';
@@ -1187,7 +1195,7 @@
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(Object.assign({
           access_key: '11c0cf65-a965-4383-a2c8-1908f6f634d3',
-          subject: `New inquiry ${ref} · ${fields.name} · ${fields.from} → ${fields.to} (${fields.travelers} pax, ${fields.cabin})`,
+          subject: `New inquiry ${ref} · ${fields.name} · ${fields.from || fields.to ? `${fields.from || '?'} → ${fields.to || '?'}` : 'route to discuss'} (${fields.travelers} pax, ${fields.cabin})`,
           from_name: 'joecooper.travel',
           replyto: fields.email,
           botcheck: data.get('website') || ''
@@ -1422,6 +1430,7 @@
     const t = ++chatToken;
     chatStarted = true;
     clearComposer(); chatLog.innerHTML = ''; msg.textContent = '';
+    reqNow.hidden = false;
     const live = ok => ok && t === chatToken;
     const preset = form.from.value && form.to.value;
 
@@ -1510,17 +1519,53 @@
     composer.innerHTML = `<button type="button" class="btn btn-gold send-final" id="chatSend">Send my request</button>
       <div class="cactions"><button type="button" class="linkish" id="chatRestart">Start over</button><span></span></div>
       <p class="fine-c">By sending this request you agree that Joe Cooper may contact you by email, or by phone if you provide a number, about this trip. No payment details needed.</p>`;
+    reqNow.hidden = true;
     document.getElementById('chatSend').addEventListener('click', () => {
       if (t !== chatToken) return;
-      composer.innerHTML = '';
       addMe('Send my request');
-      sendingDots = typing();
-      form.requestSubmit();
+      sendNow(lastQuick);
     });
     document.getElementById('chatRestart').addEventListener('click', () => { form.reset(); resetDates(); syncTrip(); startChat(); });
     scrollLog();
   }
-  let sendingDots = null;
+  let sendingDots = null, lastQuick = false;
+  function sendNow(quick) {
+    lastQuick = quick;
+    composer.innerHTML = '';
+    reqNow.hidden = true;
+    sendingDots = typing();
+    form.dataset.quick = quick ? '1' : '';
+    form.requestSubmit();   // the submit handler reads the flag synchronously
+    delete form.dataset.quick;
+  }
+  // REQUEST button: send what the client has told us so far; ask only for what's needed to reply.
+  const reqNow = document.getElementById('reqNow');
+  async function quickRequest() {
+    const t = ++chatToken;
+    chatDatesNext = null;
+    clearComposer(); closeCal();
+    reqNow.hidden = true;
+    addMe('Request');
+    const needName = !form.name.value.trim();
+    const needEmail = !(form.email.value.trim() && form.email.checkValidity());
+    if (needName || needEmail) {
+      const what = needName && needEmail ? 'name and email' : needName ? 'name' : 'email';
+      if (!(await say(`Sure! I just need your ${what} to send it.`, t))) return;
+      if (needName) {
+        if (!(await say("What's your full name?", t))) return;
+        await field(wrapOf(form.name), { input: form.name, t, validate: () => form.name.value.trim().length > 1, err: 'Please type your name.' });
+        if (t !== chatToken) return;
+      }
+      if (needEmail) {
+        if (!(await say("And the best email for your options?", t))) return;
+        await field(wrapOf(form.email), { input: form.email, t, validate: () => form.email.value.trim() && form.email.checkValidity(), err: 'That email doesn’t look right. Could you check it?' });
+        if (t !== chatToken) return;
+      }
+    }
+    if (!(await say('Perfect, sending your request to Joe now.', t))) return;
+    sendNow(true);
+  }
+  reqNow.addEventListener('click', quickRequest);
   // Errors from the submit handler appear as a concierge message, with a retry.
   new MutationObserver(() => {
     if (!form.classList.contains('chat-mode') || !msg.textContent) return;
@@ -1533,11 +1578,6 @@
     if (sheet.classList.contains('sent')) { chatStarted = false; if (sendingDots) { sendingDots.remove(); sendingDots = null; } }
   }).observe(sheet, { attributes: true, attributeFilter: ['class'] });
 
-  document.getElementById('toClassic').addEventListener('click', () => {
-    chatToken++; chatStarted = false; clearComposer(); closeCal();
-    form.classList.remove('chat-mode');
-    form.from.focus();
-  });
   document.getElementById('toChat').addEventListener('click', () => {
     form.classList.add('chat-mode');
     startChat();
