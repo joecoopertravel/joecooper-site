@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joe Cooper | Business Class Flights, Personally Arranged</title>
+<meta name="description" content="Business and first class flights, personally arranged by Joe Cooper. Request a quote and get hand-picked options within 1 hour.">
+<link rel="canonical" href="https://joecooper.travel/">
+<meta property="og:title" content="Joe Cooper | Business Class Flights, Personally Arranged">
+<meta property="og:description" content="Request a quote and get hand-picked business class options within 1 hour.">
+<meta property="og:url" content="https://joecooper.travel/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%230d1b2a%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-size=%2728%27 text-anchor=%27middle%27 fill=%27%23c9a45c%27 font-family=%27Georgia%27%3EJC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b1726; --navy-2:#13243a; --navy-3:#1c3352; --gold:#d4a853; --gold-2:#ecc77a;
+    --ink:#18202c; --muted:#5d6675; --line:#e7e2d7; --paper:#faf8f4; --white:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;overflow-x:hidden}
+  body.modal-open{overflow:hidden}
+  a{color:inherit}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:Oswald,Impact,sans-serif;font-weight:600;line-height:1.08;text-transform:uppercase;letter-spacing:.01em}
+  h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;text-transform:none;letter-spacing:0;font-size:clamp(34px,4.4vw,54px);line-height:1.1;margin-bottom:16px}
+  h2 em{font-style:italic;color:var(--gold)}
+  .eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:var(--gold);font-weight:600;margin-bottom:12px}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:4px;font-weight:600;text-decoration:none;border:0;cursor:pointer;font:600 15px Inter,sans-serif;transition:transform .2s,background .2s,box-shadow .2s}
+  .btn-gold{background:var(--gold);color:var(--navy)}
+  .btn-gold:hover{background:var(--gold-2);transform:translateY(-2px)}
+
+  /* ---------- top bar ---------- */
+  header{position:absolute;top:0;left:0;right:0;z-index:10}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;gap:20px}
+  .logo{font-family:Oswald,sans-serif;font-size:24px;color:var(--white);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;line-height:1}
+  .logo span{color:var(--gold)}
+  .logo small{display:block;font:500 10px Inter,sans-serif;letter-spacing:.3em;color:#9fb0c4;margin-top:5px}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{color:#d8dde4;text-decoration:none;font-size:14px}
+  .nav-links a:hover{color:var(--white)}
+  .call{color:var(--white);text-decoration:none;text-align:right;line-height:1.25}
+  .call small{display:block;font-size:11px;color:#9fb0c4;letter-spacing:.06em}
+  .call strong{font-size:18px;letter-spacing:.02em}
+  @media(max-width:860px){.nav-links{display:none}}
+  @media(max-width:480px){.call small{display:none}.call strong{font-size:15px}}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--white);overflow:hidden;
+        background:var(--navy)}
+  .hero h1,.hero p.sub{text-shadow:0 2px 24px rgba(0,0,0,.45)}
+  .sky{position:absolute;inset:0;pointer-events:none}
+  /* Photo: Andy Wang on Unsplash (Unsplash License), unsplash.com/photos/ogUyaf8JWA4 */
+  .photo{position:absolute;inset:-4%;background:url("https://images.unsplash.com/photo-1768346564233-d71f37bd19b6?w=2000&q=75&fm=jpg&fit=max") center 60%/cover no-repeat;
+         animation:kenburns 28s ease-in-out infinite alternate}
+  @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.08) translateY(-1.5%)}}
+  .shade{position:absolute;inset:0;background:
+      linear-gradient(180deg,rgba(7,17,29,.88) 0%,rgba(7,17,29,.62) 38%,rgba(11,23,38,.7) 66%,rgba(11,23,38,.95) 88%,#0b1726 100%),
+      radial-gradient(ellipse at center,rgba(7,17,29,.15) 0%,rgba(7,17,29,.55) 75%)}
+  .stars{position:absolute;inset:0;background-image:
+      radial-gradient(1.5px 1.5px at 12% 18%,#fff8 50%,transparent 51%),
+      radial-gradient(1px 1px at 28% 32%,#fff6 50%,transparent 51%),
+      radial-gradient(1.5px 1.5px at 44% 12%,#fff9 50%,transparent 51%),
+      radial-gradient(1px 1px at 63% 26%,#fff5 50%,transparent 51%),
+      radial-gradient(1.5px 1.5px at 78% 14%,#fff8 50%,transparent 51%),
+      radial-gradient(1px 1px at 88% 36%,#fff6 50%,transparent 51%),
+      radial-gradient(1px 1px at 6% 44%,#fff5 50%,transparent 51%),
+      radial-gradient(1px 1px at 54% 40%,#fff4 50%,transparent 51%);
+    animation:twinkle 6s ease-in-out infinite alternate}
+  @keyframes twinkle{from{opacity:.5}to{opacity:1}}
+  .glow{position:absolute;left:50%;bottom:-40%;width:140vw;height:70vh;transform:translateX(-50%);
+        background:radial-gradient(ellipse at center,rgba(212,168,83,.22) 0%,rgba(212,168,83,.05) 40%,transparent 70%)}
+  .cloud{position:absolute;border-radius:50%;background:rgba(255,255,255,.07);filter:blur(18px)}
+  .c1{width:520px;height:110px;top:62%;left:-560px;animation:drift 70s linear infinite}
+  .c2{width:380px;height:80px;top:74%;left:-420px;animation:drift 50s linear infinite -20s}
+  .c3{width:640px;height:140px;top:82%;left:-700px;animation:drift 90s linear infinite -45s;background:rgba(255,255,255,.09)}
+  .c4{width:300px;height:60px;top:52%;left:-340px;animation:drift 80s linear infinite -60s;background:rgba(255,255,255,.05)}
+  @keyframes drift{to{transform:translateX(calc(100vw + 800px))}}
+  .plane{position:absolute;top:30%;left:-120px;width:84px;animation:fly 22s linear infinite 1s;opacity:.95}
+  .plane svg{width:100%;height:auto;display:block;filter:drop-shadow(0 0 8px rgba(236,199,122,.5))}
+  .trail{position:absolute;right:100%;top:50%;width:260px;height:2px;margin-top:-1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45))}
+  @keyframes fly{
+    0%{transform:translate(0,40px) rotate(-4deg)}
+    100%{transform:translate(calc(100vw + 260px),-60px) rotate(-4deg)}
+  }
+
+  .hero-inner{position:relative;z-index:2;padding:100px 0 80px;max-width:1000px}
+  /* thin gold frame, like a private invitation */
+  .frame{position:absolute;inset:clamp(12px,2.2vw,28px);border:1px solid rgba(212,168,83,.35);z-index:1;pointer-events:none}
+  .frame::before,.frame::after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--gold)}
+  .frame::before{top:-2px;left:-2px;border-right:0;border-bottom:0}
+  .frame::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+  .hero .eyebrow{color:var(--gold-2);display:inline-flex;align-items:center;gap:16px;letter-spacing:.34em}
+  .hero .eyebrow::before,.hero .eyebrow::after{content:"";width:46px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .hero .eyebrow::after{transform:scaleX(-1)}
+  .hero h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;text-transform:none;line-height:1;margin-bottom:18px;letter-spacing:0}
+  .hero h1 .l1{display:block;font-size:clamp(15px,min(1.8vw,2.6vh),22px);font-family:Inter,sans-serif;font-weight:500;letter-spacing:.42em;text-transform:uppercase;color:#e9edf2;margin-bottom:14px}
+  .hero h1 .l2{display:block;font-size:clamp(46px,min(7.4vw,11vh),108px);font-style:italic;
+               background:linear-gradient(100deg,#b8862f 0%,#ecc77a 30%,#fff4d6 45%,#ecc77a 60%,#b8862f 100%);background-size:250% 100%;
+               -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;animation:shimmer 7s ease-in-out infinite 1.5s}
+  @keyframes shimmer{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+  .divider{width:70px;height:1px;margin:0 auto 22px;background:var(--gold);opacity:.7}
+  .hero p.sub{font-size:clamp(16px,2vw,20px);color:#c9d3df;max-width:620px;margin:0 auto clamp(24px,4.5vh,42px)}
+  .cta-big{font:600 clamp(18px,2.2vw,22px) Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase;
+           padding:24px 64px;border-radius:6px;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:var(--navy);
+           border:0;cursor:pointer;position:relative;box-shadow:0 12px 40px rgba(212,168,83,.35);animation:pulse 2.6s ease-in-out infinite 2s}
+  .cta-big{overflow:hidden}
+  .cta-big::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+                  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 4.5s ease-in-out infinite 2.5s}
+  @keyframes shine{0%,70%{left:-60%}100%{left:130%}}
+  .cta-big:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 50px rgba(212,168,83,.5)}
+  .cta-big svg{width:22px;height:22px;vertical-align:-4px;margin-left:10px;transition:transform .25s}
+  .cta-big:hover svg{transform:translateX(5px)}
+  @keyframes pulse{0%,100%{box-shadow:0 12px 40px rgba(212,168,83,.35),0 0 0 0 rgba(212,168,83,.45)}50%{box-shadow:0 12px 40px rgba(212,168,83,.35),0 0 0 18px rgba(212,168,83,0)}}
+  .hero .note{margin-top:20px;font-size:14px;color:#9fb0c4}
+  .hero .note a{color:var(--gold-2);text-decoration:none}
+
+  /* entrance animation */
+  .rise{opacity:0;transform:translateY(26px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.15s}.d2{animation-delay:.35s}.d3{animation-delay:.55s}.d4{animation-delay:.75s}.d5{animation-delay:.95s}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:#9fb0c4;font-size:11px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none}
+  .scroll-hint::after{content:"";display:block;width:1px;height:34px;margin:10px auto 0;background:linear-gradient(var(--gold),transparent);animation:hint 2s ease-in-out infinite}
+  @keyframes hint{0%,100%{transform:scaleY(.4);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+
+  /* trust strip */
+  /* trust strip: continues the hero's navy, framed by gold hairlines */
+  .strip{background:var(--navy);position:relative}
+  .strip::before,.strip::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(900px,86%);height:1px;
+                               background:linear-gradient(90deg,transparent,rgba(212,168,83,.5),transparent)}
+  .strip::before{top:0}.strip::after{bottom:0}
+  .strip .wrap{display:flex;justify-content:center;gap:clamp(24px,4vw,56px);flex-wrap:wrap;padding-top:26px;padding-bottom:26px}
+  .strip div{font-size:13px;color:#9fb0c4;letter-spacing:.08em;text-transform:uppercase}
+  .strip strong{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:22px;color:var(--gold-2);margin-right:8px;letter-spacing:0;text-transform:none}
+
+  /* how it works: same dark luxury look as the hero */
+  .how{background:linear-gradient(180deg,var(--navy) 0%,#0f2034 55%,var(--navy) 100%);color:var(--white);position:relative;overflow:hidden}
+  .how::before{content:"";position:absolute;left:50%;top:-30%;width:120vw;height:60%;transform:translateX(-50%);
+               background:radial-gradient(ellipse at center,rgba(212,168,83,.10),transparent 65%);pointer-events:none}
+  .how .lead{color:#aeb9c6}
+  .how .grid3{position:relative}
+  .how .card{cursor:pointer;outline:none}
+  .how .card .visual{opacity:.5;transition:opacity .5s}
+  .how .card.active{transform:translateY(-8px);box-shadow:0 26px 60px rgba(0,0,0,.45),0 0 0 1px rgba(212,168,83,.6)}
+  .how .card.active::before,.how .card.active::after{width:34px;height:34px}
+  .how .card.active .visual{opacity:1}
+  .how .card.active .num{color:var(--gold-2)}
+  .how .card:focus-visible{box-shadow:0 0 0 2px var(--gold)}
+
+  /* step illustrations */
+  .visual{height:120px;max-width:230px;margin:0 auto 22px}
+  .visual svg{width:100%;height:100%;overflow:visible}
+  .vf{fill:rgba(255,255,255,.05);stroke:rgba(212,168,83,.55);stroke-width:1.2}
+  .vd{fill:none;stroke:rgba(212,168,83,.6);stroke-width:1.2;stroke-dasharray:4 5}
+  .vs{fill:none;stroke:var(--gold);stroke-width:1.4}
+  .vs2{stroke:rgba(255,255,255,.3);stroke-width:2.5;stroke-linecap:round}
+  .vg{fill:var(--gold)}
+  .vt{fill:#e9edf2;font:600 22px Oswald,sans-serif;letter-spacing:1px}
+  .vtg{fill:var(--gold-2)}
+  .vtl{fill:#8fa0b5;font:600 7.5px Inter,sans-serif;letter-spacing:2px}
+  .vbest{fill:var(--gold);stroke:var(--gold-2)}
+  .vtb{fill:var(--navy);font:700 9px Inter,sans-serif;letter-spacing:2px}
+  .vtb2{fill:var(--navy);font:600 6.5px Inter,sans-serif;letter-spacing:1.5px}
+  .venv{fill:#13243a;stroke:rgba(212,168,83,.7);stroke-width:1.2}
+  .vclock{fill:rgba(212,168,83,.08);stroke:var(--gold);stroke-width:1.5}
+  .hand{stroke:var(--gold-2);stroke-width:2;stroke-linecap:round;transform-box:fill-box;transform-origin:50% 100%;animation:spin 4s linear infinite}
+  .vring{fill:none;stroke:var(--gold);stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:ring 2s ease-out infinite}
+  .k1,.k2,.k3{animation:key 4s infinite}.k2{animation-delay:.2s}.k3{animation-delay:.4s}
+  .fly1{animation:fly1 4s ease-in-out infinite}
+  .opt{transform-box:fill-box;transform-origin:50% 100%;animation:opt 4s ease-out infinite}
+  .o1{--r:-8deg}.o2{--r:0deg;animation-delay:.25s}.o3{--r:8deg;animation-delay:.5s}
+  .dot{fill:var(--gold-2);animation:blink 1.2s infinite}.dt2{animation-delay:.2s}.dt3{animation-delay:.4s}
+  @keyframes key{0%,8%{opacity:0}16%,88%{opacity:1}100%{opacity:0}}
+  @keyframes fly1{0%,12%{transform:translateX(0)}70%,100%{transform:translateX(118px)}}
+  @keyframes opt{0%{opacity:0;transform:translateY(46px)}25%,85%{opacity:1;transform:translateY(0) rotate(var(--r))}100%{opacity:0;transform:translateY(0) rotate(var(--r))}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes ring{from{transform:scale(1);opacity:1}to{transform:scale(4);opacity:0}}
+  @keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+
+  /* stepper under the cards */
+  .stepper{display:flex;align-items:center;justify-content:center;gap:0;margin:46px auto 0;max-width:420px;position:relative}
+  .stepper::before{content:"";position:absolute;left:24px;right:24px;top:50%;height:1px;background:rgba(212,168,83,.25)}
+  .stepper .bar{position:absolute;left:24px;top:50%;height:2px;margin-top:-1px;background:linear-gradient(90deg,var(--gold),var(--gold-2));
+                width:0;max-width:calc(100% - 48px);transition:width .8s cubic-bezier(.2,.7,.2,1)}
+  .stepper button{position:relative;z-index:1;flex:1;background:none;border:0;cursor:pointer;display:flex;justify-content:center}
+  .stepper button span{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--gold);background:var(--navy);transition:.4s}
+  .stepper button.on span{background:var(--gold);box-shadow:0 0 0 6px rgba(212,168,83,.18)}
+  .ghost{margin-top:40px;background:transparent;border:1px solid var(--gold);color:var(--gold-2);padding:16px 36px;cursor:pointer;
+         font:600 14px Oswald,sans-serif;letter-spacing:.2em;text-transform:uppercase;border-radius:2px;transition:.3s}
+  .ghost:hover{background:var(--gold);color:var(--navy)}
+  .how .card{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(212,168,83,.22);
+             border-radius:2px;backdrop-filter:blur(4px);position:relative;text-align:center;padding:44px 32px 40px}
+  .how .card::before,.how .card::after{content:"";position:absolute;width:16px;height:16px;border:1.5px solid var(--gold);transition:.4s}
+  .how .card::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  .how .card::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+  .how .card:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(0,0,0,.35),0 0 0 1px rgba(212,168,83,.35)}
+  .how .card:hover::before,.how .card:hover::after{width:34px;height:34px}
+  .how .card .num{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:500;font-size:34px;color:var(--gold);margin-bottom:6px;line-height:1;transition:color .4s}
+  .how .card h3{font-family:Inter,sans-serif;font-weight:600;font-size:13px;letter-spacing:.28em;color:var(--white);margin-bottom:14px}
+  .how .card p{color:#aeb9c6}
+  .how .card .rule{width:30px;height:1px;background:var(--gold);opacity:.6;margin:0 auto 14px}
+  .how .card .go{display:inline-block;margin-top:18px;font:600 12px Inter,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-2);
+                 opacity:0;transform:translateY(6px);transition:.35s}
+  .how .card:hover .go,.how .card.active .go,.how .card:focus-visible .go{opacity:1;transform:none}
+  @media(hover:none){.how .card .go{opacity:1;transform:none}}
+
+  section{padding:96px 0}
+  .center{text-align:center}
+  .lead{color:var(--muted);max-width:680px;font-size:17px}
+  .center .lead{margin:0 auto}
+
+  /* steps */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:52px;text-align:left}
+  @media(max-width:860px){.grid3{grid-template-columns:1fr}}
+  .card{background:var(--white);border:1px solid var(--line);padding:36px 30px;border-radius:6px;transition:transform .3s,box-shadow .3s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(11,23,38,.08)}
+  .card .num{font-family:Oswald,sans-serif;font-size:44px;color:var(--gold);line-height:1;margin-bottom:14px}
+  .card h3{font-size:22px;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:15px}
+
+  /* about */
+  .about{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .about-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:64px;align-items:center}
+  @media(max-width:860px){.about-grid{grid-template-columns:1fr;gap:36px}}
+  .portrait{aspect-ratio:4/5;border-radius:6px;background:linear-gradient(160deg,var(--navy-3),var(--navy));display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:Oswald,sans-serif;font-size:96px;letter-spacing:.06em}
+  /* portrait: graded photo, gold offset frame, name plate */
+  .photo-card{position:relative;margin:0 18px 18px 0;aspect-ratio:4/5}
+  .photo-card::before{content:"";position:absolute;inset:18px -18px -18px 18px;border:1px solid var(--gold);opacity:.7;z-index:0;transition:inset .5s}
+  .photo-card:hover::before{inset:10px -10px -10px 10px}
+  .photo-card .ph{position:relative;z-index:1;width:100%;height:100%;overflow:hidden;box-shadow:0 30px 60px rgba(11,23,38,.25)}
+  .photo-card img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;
+                  filter:contrast(1.04) saturate(.92) sepia(.05);transition:transform 1.2s ease}
+  .photo-card:hover img{transform:scale(1.04)}
+  .photo-card.nophoto .ph{display:none}
+  .photo-card::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+                     background:linear-gradient(180deg,transparent 55%,rgba(11,23,38,.85) 100%),radial-gradient(ellipse at 30% 35%,transparent 50%,rgba(11,23,38,.25) 100%)}
+  .photo-card figcaption{position:absolute;left:24px;bottom:22px;z-index:3;color:var(--white)}
+  .photo-card figcaption strong{display:block;font:italic 500 30px "Cormorant Garamond",serif;line-height:1}
+  .photo-card figcaption span{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-2)}
+  .photo-card .initials{display:none}
+  .photo-card.nophoto{background:linear-gradient(160deg,var(--navy-3),var(--navy))}
+  .photo-card.nophoto img{display:none}
+  .photo-card.nophoto .initials{display:flex;position:absolute;inset:0;align-items:center;justify-content:center;color:var(--gold);font:500 96px Oswald,sans-serif;z-index:1}
+  .about ul{list-style:none;margin-top:24px}
+  .about li{padding:12px 0 12px 30px;border-bottom:1px solid var(--line);position:relative}
+  .about li::before{content:"";position:absolute;left:0;top:22px;width:14px;height:2px;background:var(--gold)}
+
+  .routes{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;justify-content:center}
+  .routes button{border:1px solid var(--line);background:var(--white);padding:11px 20px;font:14px Inter,sans-serif;border-radius:40px;cursor:pointer;transition:.2s}
+  .routes button:hover{border-color:var(--gold);background:#fff8ea}
+
+  /* final cta */
+  .final{background:var(--navy);color:var(--white);text-align:center}
+  .final .lead{color:#c4ccd6;margin:0 auto 34px}
+
+  /* faq */
+  .faq{max-width:820px;margin:40px auto 0}
+  details{border-bottom:1px solid var(--line);padding:20px 0}
+  summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:20px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--gold);font-size:22px;line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--muted);margin-top:10px}
+
+  footer{background:#060d16;color:#8d97a4;padding:48px 0;font-size:14px}
+  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  footer a{color:#c4ccd6}
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- quote modal ---------- */
+  .modal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;
+         background:rgba(5,12,22,.72);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+  .modal.open{opacity:1;visibility:visible}
+  .sheet{background:var(--white);width:100%;max-width:640px;max-height:calc(100vh - 40px);overflow:auto;border-radius:10px;
+         box-shadow:0 30px 80px rgba(0,0,0,.4);transform:translateY(30px) scale(.97);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .modal.open .sheet{transform:none}
+  .sheet-head{background:var(--navy);color:var(--white);padding:24px 28px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;position:sticky;top:0;z-index:1}
+  .sheet-head h3{font-size:24px}
+  .sheet-head p{color:#9fb0c4;font-size:14px;margin-top:4px}
+  .x{background:none;border:0;color:#c4ccd6;font-size:28px;line-height:1;cursor:pointer;padding:0 4px}
+  .x:hover{color:var(--white)}
+  .sheet form{padding:26px 28px 28px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .full{grid-column:1/-1}
+  .legend{grid-column:1/-1;font:600 12px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-top:6px;padding-top:14px;border-top:1px solid var(--line)}
+  .legend.first{border-top:0;padding-top:0;margin-top:0}
+  .trip{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+  .trip label{cursor:pointer}
+  .trip input{position:absolute;opacity:0;pointer-events:none}
+  .trip span{display:inline-block;padding:9px 16px;border:1px solid var(--line);border-radius:4px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:.2s}
+  .trip input:checked + span{background:var(--navy);border-color:var(--navy);color:var(--white)}
+  .trip input:focus-visible + span{outline:2px solid var(--gold);outline-offset:2px}
+  .f label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px}
+  .f label i{font-style:normal;color:#9aa3af;font-weight:400}
+  .f input,.f select,.f textarea{width:100%;padding:12px 13px;border:1px solid #d9d4c8;background:#fdfcf9;color:var(--ink);font:15px Inter,sans-serif;border-radius:4px;transition:border-color .2s,box-shadow .2s}
+  .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,168,83,.18)}
+  .f.hide{display:none}
+  /* custom date picker with built-in flexibility */
+  .dates{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative}
+  .dfield{width:100%;display:flex;align-items:center;gap:8px;text-align:left;padding:12px 13px;border:1px solid #d9d4c8;background:#fdfcf9;
+          border-radius:4px;font:15px Inter,sans-serif;color:var(--ink);cursor:pointer;transition:border-color .2s,box-shadow .2s;min-height:47px}
+  .dfield:hover{border-color:var(--gold)}
+  .dfield.on{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,168,83,.18)}
+  .dfield .ph{color:#9aa3af}
+  .dfield .fx{font:600 11px Inter,sans-serif;color:#9a6f22;background:#f6efe0;border-radius:3px;padding:2px 6px}
+  .dfield svg{width:17px;height:17px;margin-left:auto;color:#b8862f;flex:none}
+  .cal{position:absolute;top:calc(100% + 6px);left:0;z-index:30;background:var(--white);border:1px solid #e3dccb;border-radius:10px;
+       box-shadow:0 24px 60px rgba(11,23,38,.25);padding:16px 18px 14px;width:max-content;max-width:100%;animation:calIn .2s ease-out}
+  @keyframes calIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .cal-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .cal-step{font:600 11px Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#b8862f}
+  .cal-nav{display:flex;gap:6px}
+  .cal-nav button{width:32px;height:32px;border:1px solid #e3dccb;border-radius:50%;background:var(--white);cursor:pointer;color:var(--navy);font-size:16px;line-height:1}
+  .cal-nav button:disabled{opacity:.35;cursor:default}
+  .cal-months{display:flex;gap:26px}
+  .cal-m h4{font:600 14px Inter,sans-serif;text-align:center;margin:2px 0 8px;color:var(--navy);text-transform:none;letter-spacing:0}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,38px);row-gap:2px}
+  .cal-grid .wd{font:600 11px Inter,sans-serif;color:#9aa3af;text-align:center;padding:4px 0}
+  .cal-grid .d{height:36px;border:0;background:none;font:14px Inter,sans-serif;color:var(--ink);cursor:pointer;border-radius:50%;position:relative}
+  .cal-grid .d:hover:not(:disabled){background:#f2ede3}
+  .cal-grid .d:disabled{color:#cdd2d8;cursor:default}
+  .cal-grid .d.today{font-weight:700;color:#b8862f}
+  .cal-grid .d.fl{box-shadow:inset 0 0 0 1px rgba(212,168,83,.65)}
+  .cal-grid .d.in{background:#f6efe0;border-radius:0}
+  .cal-grid .d.start,.cal-grid .d.end{background:var(--navy);color:var(--white);font-weight:600}
+  .cal-flex{border-top:1px solid #efe9dc;margin-top:12px;padding-top:12px}
+  .cal-flex .lbl{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .cal-flex .lbl b{color:var(--navy);font-weight:600}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chips button{padding:7px 13px;border:1px solid #d9d4c8;border-radius:20px;background:#fdfcf9;font:500 13px Inter,sans-serif;color:var(--muted);cursor:pointer;transition:.2s}
+  .chips button:hover{border-color:var(--gold)}
+  .chips button.on{background:var(--navy);border-color:var(--navy);color:var(--white)}
+  .cal-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+  .cal-foot .clear{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font:13px Inter,sans-serif}
+  .cal-foot .done{padding:10px 24px;border:0;border-radius:4px;background:var(--gold);color:var(--navy);cursor:pointer;font:600 14px Oswald,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+  .cal-foot .done:hover{background:var(--gold-2)}
+  @media(max-width:600px){
+    .cal{left:0;right:0;width:auto;padding:14px 12px 12px}
+    .cal-grid{grid-template-columns:repeat(7,1fr)}
+  }
+  .flexd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .flexd label{cursor:pointer;margin:0}
+  .flexd input{position:absolute;opacity:0;pointer-events:none}
+  .flexd span{display:block;text-align:center;padding:10px 6px;border:1px solid #d9d4c8;border-radius:4px;background:#fdfcf9;
+              font-size:14px;font-weight:500;color:var(--muted);transition:.2s;white-space:nowrap}
+  .flexd span:hover{border-color:var(--gold)}
+  .flexd input:checked + span{background:#f6efe0;border-color:var(--gold);color:var(--navy);font-weight:600;box-shadow:inset 0 0 0 1px var(--gold)}
+  .flexd input:focus-visible + span{outline:2px solid var(--gold);outline-offset:2px}
+  @media(max-width:420px){.flexd{grid-template-columns:repeat(2,1fr)}}
+  .f input[type="date"]{cursor:pointer}
+  .f input[type="date"]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.7}
+
+  /* city / airport suggestions */
+  .ac{position:relative}
+  .ac-list{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;list-style:none;margin:0;padding:6px;background:var(--white);
+           border:1px solid #e3dccb;border-radius:6px;box-shadow:0 18px 40px rgba(11,23,38,.18);max-height:300px;overflow:auto}
+  @media(min-width:601px){.f.ac:nth-of-type(odd) .ac-list,.f.ac .ac-list{min-width:340px}}
+  #to-list{left:auto;right:0}
+  .ac-list li{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:4px;cursor:pointer}
+  .ac-list li[aria-selected="true"],.ac-list li:hover{background:#f6efe0}
+  .ac-list .ic{flex:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f2ede3;color:#b8862f}
+  .ac-list .ic svg{width:15px;height:15px}
+  .ac-list li.city .ic{background:var(--navy);color:var(--gold-2)}
+  .ac-list li.sub{padding-left:28px}
+  .ac-list .tx{flex:1;min-width:0;line-height:1.3}
+  .ac-list .tx b{display:block;font-weight:600;font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ac-list .tx small{display:block;font-size:12px;color:#8a919c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ac-list mark{background:none;color:#b8862f;font-weight:700}
+  .ac-list .code{flex:none;font:600 13px Oswald,sans-serif;letter-spacing:.08em;color:var(--navy);border:1px solid #e3dccb;border-radius:3px;padding:2px 7px}
+  .ac-list .empty{color:#8a919c;font-size:13px;cursor:default}
+  .ac-list .empty:hover{background:none}
+  .hint{display:block;font-size:12px;color:#b4462f;margin-top:5px}
+  .submit{grid-column:1/-1;margin-top:6px}
+  .submit .btn{width:100%;justify-content:center;padding:17px;font:600 17px Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+  .submit .btn:disabled{opacity:.6;cursor:wait;transform:none}
+  .fine{grid-column:1/-1;font-size:12px;color:#8a919c;line-height:1.5}
+  #formMsg{grid-column:1/-1;font-size:14px;color:#b4462f;min-height:0}
+  .done{display:none;padding:56px 32px;text-align:center}
+  .done .tick{width:72px;height:72px;margin:0 auto 20px;border-radius:50%;background:#f4ead2;display:flex;align-items:center;justify-content:center;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+  .done .tick svg{width:34px;height:34px}
+  .done h3{font-size:28px;margin-bottom:10px}
+  .done p{color:var(--muted);max-width:420px;margin:0 auto 26px}
+  @keyframes pop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+  .sheet.sent form{display:none}
+  .sheet.sent .done{display:block}
+  @media(max-width:600px){
+    .modal{padding:0;align-items:flex-end}
+    .sheet{max-height:94vh;border-radius:14px 14px 0 0}
+    .sheet form{grid-template-columns:1fr;padding:22px 20px 26px}
+    .sheet-head{padding:20px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .rise,.reveal{opacity:1;transform:none}
+    .plane{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#">Joe <span>Cooper</span><small>Business Class Travel</small></a>
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#about">About</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="call" href="tel:+16305665249"><small>Speak with Joe</small><strong>(630) 566-5249</strong></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="sky" aria-hidden="true">
+    <div class="photo"></div>
+    <div class="shade"></div>
+    <div class="glow"></div>
+    <div class="frame"></div>
+    <div class="plane"><div class="trail"></div>
+      <svg viewBox="0 0 64 24" xmlns="http://www.w3.org/2000/svg"><path fill="#ecc77a" d="M62 12c0-1.6-2.4-2.6-5-2.6H41L27 1h-5l7 8.4H13L8 4H4l3 8-3 8h4l5-5.4h16L22 23h5l14-8.4h16c2.6 0 5-1 5-2.6z"/></svg>
+    </div>
+  </div>
+
+  <div class="wrap hero-inner">
+    <div class="eyebrow rise d1">Private travel service</div>
+    <h1 class="rise d2"><span class="l1">Business &amp; first class</span><span class="l2">Joe Cooper Travel</span></h1>
+    <div class="divider rise d3"></div>
+    <p class="sub rise d3">No promo-fare gimmicks. No endless calls.<br>Real business class deals, sent to your inbox within 1 hour.</p>
+    <div class="rise d4">
+      <button class="cta-big" type="button" data-open-quote>Request a quote
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+    <p class="note rise d5">Complimentary &amp; discreet · Prefer to talk? <a href="tel:+16305665249">Call (630) 566-5249</a></p>
+  </div>
+  <a class="scroll-hint" href="#how">Scroll</a>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <div><strong>10+ years</strong>in premium air travel</div>
+    <div><strong>Private</strong>one-to-one service</div>
+    <div><strong>Discreet</strong>your details stay with me</div>
+    <div><strong>1 hour</strong>to get your options</div>
+  </div>
+</div>
+
+<!-- ================= HOW ================= -->
+<section id="how" class="center how">
+  <div class="wrap">
+    <div class="eyebrow reveal">How it works</div>
+    <h2 class="reveal">Three steps. <em>No obligation.</em></h2>
+    <p class="lead reveal">No comparing dozens of sites, no waiting on hold. I do the searching; you choose.</p>
+    <div class="grid3">
+      <div class="card reveal" tabindex="0">
+        <div class="visual">
+          <svg viewBox="0 0 220 130" aria-hidden="true">
+            <rect class="vf" x="8" y="14" width="204" height="102" rx="10"/>
+            <line class="vd" x1="158" y1="22" x2="158" y2="108"/>
+            <text class="vtl" x="26" y="40">FROM</text><text class="vt" x="26" y="66">NYC</text>
+            <text class="vtl" x="98" y="40">TO</text>
+            <text class="vt vtg" x="98" y="66"><tspan class="k1">L</tspan><tspan class="k2">O</tspan><tspan class="k3">N</tspan></text>
+            <path class="vd" d="M28 92 H146"/>
+            <circle class="vg" cx="28" cy="92" r="3"/><circle class="vg" cx="146" cy="92" r="3"/>
+            <g class="fly1"><path class="vg" transform="translate(17 88) scale(.35)" d="M62 12c0-1.6-2.4-2.6-5-2.6H41L27 1h-5l7 8.4H13L8 4H4l3 8-3 8h4l5-5.4h16L22 23h5l14-8.4h16c2.6 0 5-1 5-2.6z"/></g>
+            <text class="vtl" x="170" y="40">PAX</text><text class="vt" x="175" y="66">2</text>
+            <text class="vtl" x="166" y="96">CLASS</text><text class="vtl vtg" x="172" y="106" style="fill:#ecc77a">BIZ</text>
+          </svg>
+        </div>
+        <div class="num">I</div><h3>Send your trip</h3><div class="rule"></div>
+        <p>Route, dates and travelers. One short form.</p>
+        <span class="go">Request a quote &rarr;</span>
+      </div>
+      <div class="card reveal" tabindex="0">
+        <div class="visual">
+          <svg viewBox="0 0 220 130" aria-hidden="true">
+            <g class="opt o1"><rect class="vf" x="38" y="22" width="52" height="38" rx="5"/><line class="vs2" x1="46" y1="34" x2="76" y2="34"/><line class="vs2" x1="46" y1="44" x2="66" y2="44"/></g>
+            <g class="opt o3"><rect class="vf" x="130" y="22" width="52" height="38" rx="5"/><line class="vs2" x1="138" y1="34" x2="168" y2="34"/><line class="vs2" x1="138" y1="44" x2="158" y2="44"/></g>
+            <g class="opt o2"><rect class="vbest" x="82" y="8" width="56" height="46" rx="5"/><text class="vtb" x="110" y="29" text-anchor="middle">BEST</text><text class="vtb2" x="110" y="42" text-anchor="middle">OPTION</text></g>
+            <rect class="venv" x="50" y="62" width="120" height="56" rx="6"/>
+            <path class="vs" d="M50 66 L110 98 L170 66"/>
+            <g transform="translate(198 92)"><circle class="vclock" r="14"/><line class="hand" x1="0" y1="0" x2="0" y2="-9"/><circle class="vg" r="2"/></g>
+            <text class="vtl" x="198" y="122" text-anchor="middle" style="fill:#ecc77a">1 HOUR</text>
+          </svg>
+        </div>
+        <div class="num">II</div><h3>Get 2–3 options</h3><div class="rule"></div>
+        <p>Hand-picked fares in your inbox within 1 hour.</p>
+        <span class="go">Request a quote &rarr;</span>
+      </div>
+      <div class="card reveal" tabindex="0">
+        <div class="visual">
+          <svg viewBox="0 0 220 130" aria-hidden="true">
+            <path class="vd" d="M20 108 Q110 -12 200 108"/>
+            <circle class="vg" cx="20" cy="108" r="4"/>
+            <circle class="vg" cx="200" cy="108" r="4"/><circle class="vring" cx="200" cy="108" r="4"/>
+            <g><path class="vg" transform="translate(-11 -4) scale(.35)" d="M62 12c0-1.6-2.4-2.6-5-2.6H41L27 1h-5l7 8.4H13L8 4H4l3 8-3 8h4l5-5.4h16L22 23h5l14-8.4h16c2.6 0 5-1 5-2.6z"/>
+              <animateMotion dur="4s" repeatCount="indefinite" rotate="auto" path="M20 108 Q110 -12 200 108"/></g>
+            <g transform="translate(110 78)"><rect class="vf" x="-30" y="-14" width="60" height="28" rx="14"/>
+              <circle class="dot" cx="-12" cy="0" r="3"/><circle class="dot dt2" cx="0" cy="0" r="3"/><circle class="dot dt3" cx="12" cy="0" r="3"/></g>
+            <text class="vtl" x="8" y="126">BOOKED</text><text class="vtl" x="214" y="126" text-anchor="end">HOME</text>
+          </svg>
+        </div>
+        <div class="num">III</div><h3>Fly with support</h3><div class="rule"></div>
+        <p>One contact for any change, until you're home.</p>
+        <span class="go">Request a quote &rarr;</span>
+      </div>
+    </div>
+    <div class="stepper" aria-label="Steps"><span class="bar"></span>
+      <button type="button" aria-label="Step 1"><span></span></button>
+      <button type="button" aria-label="Step 2"><span></span></button>
+      <button type="button" aria-label="Step 3"><span></span></button>
+    </div>
+    <button class="ghost reveal" type="button" data-open-quote>Start with step I &nbsp;→</button>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="about">
+  <div class="wrap about-grid">
+    <figure class="photo-card reveal">
+      <div class="ph"><img src="joecooper.png" alt="Joe Cooper, private business class travel advisor" width="512" height="512" loading="lazy"
+           onerror="this.closest('figure').classList.add('nophoto')"></div>
+      <span class="initials" aria-hidden="true">JC</span>
+      <figcaption><strong>Joe Cooper</strong><span>Private travel advisor · 10+ years</span></figcaption>
+    </figure>
+    <div class="reveal">
+      <div class="eyebrow">About</div>
+      <h2>Hi, I'm <em>Joe</em></h2>
+      <p class="lead">For more than ten years I've helped travelers fly business and first class to Europe, Asia, Australia, Africa and beyond. My clients come back because they deal with one person who knows their preferences and answers the phone.</p>
+      <ul>
+        <li>Personal service: you always talk to me, not a call center</li>
+        <li>Options across many airlines and routings, not just one</li>
+        <li>Fast replies by phone and email</li>
+        <li>Help with changes before and after you fly</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ROUTES ================= -->
+<section class="center">
+  <div class="wrap">
+    <div class="eyebrow reveal">Where clients fly</div>
+    <h2 class="reveal">Popular <em>business class</em> routes</h2>
+    <p class="lead reveal">From any major US city. Tap a route to request a quote, or just ask about yours.</p>
+    <div class="routes reveal">
+      <button type="button" data-open-quote data-from="New York" data-to="London">New York – London</button>
+      <button type="button" data-open-quote data-from="Los Angeles" data-to="Sydney">Los Angeles – Sydney</button>
+      <button type="button" data-open-quote data-from="Boston" data-to="Rome">Boston – Rome</button>
+      <button type="button" data-open-quote data-from="Miami" data-to="Paris">Miami – Paris</button>
+      <button type="button" data-open-quote data-from="New York" data-to="Delhi">New York – Delhi</button>
+      <button type="button" data-open-quote data-from="San Francisco" data-to="Tokyo">San Francisco – Tokyo</button>
+      <button type="button" data-open-quote data-from="Chicago" data-to="Athens">Chicago – Athens</button>
+      <button type="button" data-open-quote data-from="Atlanta" data-to="Johannesburg">Atlanta – Johannesburg</button>
+      <button type="button" data-open-quote data-from="Houston" data-to="Dubai">Houston – Dubai</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="center">
+      <div class="eyebrow reveal">FAQ</div>
+      <h2 class="reveal">Good <em>questions</em></h2>
+    </div>
+    <div class="faq reveal">
+      <details><summary>Is there a fee to request a quote?</summary><p>No. Requesting options is free and there's no obligation to book.</p></details>
+      <details><summary>How fast will I hear back?</summary><p>Within 1 hour. For urgent trips, call me.</p></details>
+      <details><summary>Which airlines do you work with?</summary><p>I compare options across major international airlines and alliances, so you see more than one carrier's fares.</p></details>
+      <details><summary>Can you help if my plans change?</summary><p>Yes. I stay your contact after booking and help with changes according to the fare rules of your ticket.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2 class="reveal">Where are you <em>flying next?</em></h2>
+    <p class="lead reveal">Send your route and dates. I'll reply personally with the best options I can find.</p>
+    <div class="reveal"><button class="cta-big" type="button" data-open-quote>Request a quote</button></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <div class="logo">Joe <span>Cooper</span></div>
+      <p style="margin-top:12px"><a href="tel:+16305665249">(630) 566-5249</a> · <a href="mailto:sales@joecooper.travel">sales@joecooper.travel</a></p>
+    </div>
+    <div id="privacy" style="max-width:420px">
+      <p><strong style="color:#c4ccd6">Privacy note.</strong> Details you send are used only to answer your travel request. They are never sold. To have your data deleted, email sales@joecooper.travel.</p>
+      <p style="margin-top:10px">© <span id="yr"></span> Joe Cooper</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= QUOTE MODAL ================= -->
+<div class="modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="qTitle" hidden>
+  <div class="sheet" id="sheet">
+    <div class="sheet-head">
+      <div><h3 id="qTitle">Request a quote</h3><p>Free, no obligation. I'll reply personally within 1 hour.</p></div>
+      <button class="x" type="button" data-close aria-label="Close">×</button>
+    </div>
+
+    <!-- Submissions are emailed to sales@joecooper.travel via Web3Forms (see the submit handler) -->
+    <form id="quoteForm" name="quote" action="#" method="POST" novalidate>
+      <input type="hidden" name="reference" value="">
+      <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+
+      <div class="legend first">Your flight</div>
+      <div class="trip" role="radiogroup" aria-label="Trip type">
+        <label><input type="radio" name="trip" value="Round trip" checked><span>Round trip</span></label>
+        <label><input type="radio" name="trip" value="One way"><span>One way</span></label>
+        <label><input type="radio" name="trip" value="Multi-city"><span>Multi-city</span></label>
+      </div>
+      <div class="f ac"><label for="from">From</label>
+        <input id="from" name="from" placeholder="City or airport" required autocomplete="off" spellcheck="false"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="from-list">
+        <ul class="ac-list" id="from-list" role="listbox" hidden></ul></div>
+      <div class="f ac"><label for="to">To</label>
+        <input id="to" name="to" placeholder="City or airport" required autocomplete="off" spellcheck="false"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="to-list">
+        <ul class="ac-list" id="to-list" role="listbox" hidden></ul></div>
+      <div class="dates" id="dates">
+        <div class="f"><label for="departBtn">Departure date</label><button type="button" class="dfield" id="departBtn" aria-haspopup="dialog"></button></div>
+        <div class="f" id="retWrap"><label for="returnBtn">Return date</label><button type="button" class="dfield" id="returnBtn" aria-haspopup="dialog"></button></div>
+        <input type="hidden" name="depart" id="depart">
+        <input type="hidden" name="return" id="return">
+        <input type="hidden" name="flexibility" id="flexibility" value="Exact dates">
+        <div class="cal" id="cal" role="dialog" aria-label="Choose dates" hidden></div>
+      </div>
+      <div class="f"><label for="pax">Travelers</label>
+        <select id="pax" name="travelers"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select></div>
+      <div class="f"><label for="cabin">Cabin</label>
+        <select id="cabin" name="cabin"><option>Business</option><option>First</option><option>Premium economy</option></select></div>
+      <div class="f full"><label for="notes">Notes <i id="notesHint">(optional: flexible dates, other cities, preferred airline)</i></label><textarea id="notes" name="notes" rows="2"></textarea></div>
+
+      <div class="legend">Your details</div>
+      <div class="f full"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" required></div>
+      <div class="f"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div class="f"><label for="phone">Phone <i>(optional)</i></label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="For faster options"></div>
+
+      <p id="formMsg" role="alert"></p>
+      <div class="submit"><button class="btn btn-gold" type="submit">Get my options</button></div>
+      <p class="fine">By sending this request you agree that Joe Cooper may contact you by email, or by phone if you provide a number, about this trip. No payment details needed. See the <a href="#privacy" data-close>privacy note</a>.</p>
+    </form>
+
+    <div class="done">
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#b8862f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h3>Request received</h3>
+      <p style="margin-bottom:10px">Your reference: <strong id="refNo" style="color:var(--navy);letter-spacing:.05em"></strong></p>
+      <p>Thank you! I'm on it and will reply personally with your options within 1 hour. Urgent? Call <a href="tel:+16305665249">(630) 566-5249</a>.</p>
+      <button class="btn btn-gold" type="button" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const modal = document.getElementById('quoteModal');
+  const sheet = document.getElementById('sheet');
+  const form = document.getElementById('quoteForm');
+  const msg = document.getElementById('formMsg');
+  let lastFocus = null;
+
+  function openQuote(btn) {
+    lastFocus = btn;
+    if (sheet.classList.contains('sent')) { sheet.classList.remove('sent'); form.reset(); resetDates(); syncTrip(); }
+    if (btn && btn.dataset.from) form.from.value = btn.dataset.from;
+    if (btn && btn.dataset.to) form.to.value = btn.dataset.to;
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add('open'));
+    document.body.classList.add('modal-open');
+    setTimeout(() => (form.from.value ? departBtn : form.from).focus(), 250);
+  }
+  function closeQuote() {
+    modal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    setTimeout(() => { modal.hidden = true; }, 300);
+    if (lastFocus) lastFocus.focus();
+  }
+  document.querySelectorAll('[data-open-quote]').forEach(b => b.addEventListener('click', () => openQuote(b)));
+  modal.addEventListener('click', e => { if (e.target === modal || e.target.closest('[data-close]')) closeQuote(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeQuote(); });
+
+  // Return date: required for round trips, hidden otherwise (multi-city legs go in the notes).
+  const retWrap = document.getElementById('retWrap');
+  const ret = form['return'];
+  const notesHint = document.getElementById('notesHint');
+  function syncTrip() {
+    const trip = form.trip.value;
+    const round = trip === 'Round trip';
+    retWrap.classList.toggle('hide', !round);
+    if (!round) { ret.value = ''; if (phase === 'return') phase = 'depart'; }
+    renderFields();
+    if (!cal.hidden) renderCal();
+    notesHint.textContent = trip === 'Multi-city'
+      ? '(list the other legs with dates, e.g. "Paris to Rome, Jun 12")'
+      : '(optional: flexible dates, other cities, preferred airline)';
+  }
+  form.querySelectorAll('input[name="trip"]').forEach(r => r.addEventListener('change', syncTrip));
+
+  // Date picker: one calendar for departure and return, with the flexibility choice inside it.
+  // No past dates, and a return can never be before the departure.
+  const pad = n => String(n).padStart(2, '0');
+  const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return iso(d); };
+  const today = iso(new Date());
+  const dep = form.depart, flex = form.flexibility;
+  const departBtn = document.getElementById('departBtn');
+  const returnBtn = document.getElementById('returnBtn');
+  const cal = document.getElementById('cal');
+  const FLEX = [['Exact dates', 'Exact dates', 0], ['+/- 1 day', '± 1 day', 1], ['+/- 2 days', '± 2 days', 2], ['+/- 3 days', '± 3 days', 3]];
+  const ICON_CAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+  let phase = 'depart', view = null;
+  const flexDays = () => (FLEX.find(f => f[0] === flex.value) || FLEX[0])[2];
+  const nice = s => parse(s).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+  function renderFields() {
+    const n = flexDays();
+    [[departBtn, dep], [returnBtn, ret]].forEach(([b, inp]) => {
+      b.innerHTML = (inp.value ? `<span>${nice(inp.value)}</span>${n ? `<span class="fx">± ${n}</span>` : ''}` : '<span class="ph">Select date</span>') + ICON_CAL;
+    });
+    departBtn.classList.toggle('on', !cal.hidden && phase === 'depart');
+    returnBtn.classList.toggle('on', !cal.hidden && phase === 'return');
+  }
+  function renderCal() {
+    const round = form.trip.value === 'Round trip';
+    const n = flexDays();
+    const months = window.innerWidth >= 720 ? 2 : 1;
+    const first = parse(today); first.setDate(1);
+    const canPrev = view > first;
+    const flexSet = new Set();
+    if (n) [dep.value, ret.value].filter(Boolean).forEach(s => { for (let k = 1; k <= n; k++) { flexSet.add(addDays(s, k)); flexSet.add(addDays(s, -k)); } });
+    let html = `<div class="cal-top"><span class="cal-step">${phase === 'depart' ? 'Select departure' : 'Select return'}</span>
+      <span class="cal-nav"><button type="button" data-nav="-1" aria-label="Previous month" ${canPrev ? '' : 'disabled'}>‹</button><button type="button" data-nav="1" aria-label="Next month">›</button></span></div><div class="cal-months">`;
+    for (let k = 0; k < months; k++) {
+      const m = new Date(view.getFullYear(), view.getMonth() + k, 1);
+      const days = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+      html += `<div class="cal-m"><h4>${m.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h4><div class="cal-grid">`
+        + ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(w => `<span class="wd">${w}</span>`).join('')
+        + '<span></span>'.repeat(m.getDay());
+      for (let d = 1; d <= days; d++) {
+        const s = iso(new Date(m.getFullYear(), m.getMonth(), d));
+        const off = s < today || (phase === 'return' && dep.value && s < dep.value);
+        const cls = ['d', s === today && 'today', s === dep.value && 'start', s === ret.value && 'end',
+          dep.value && ret.value && s > dep.value && s < ret.value && 'in', flexSet.has(s) && 'fl'].filter(Boolean).join(' ');
+        html += `<button type="button" class="${cls}" data-d="${s}" ${off ? 'disabled' : ''} aria-label="${nice(s)}">${d}</button>`;
+      }
+      html += '</div></div>';
+    }
+    html += `</div><div class="cal-flex"><div class="lbl"><b>Date flexibility</b> · more flexibility often means a better fare</div><div class="chips">`
+      + FLEX.map(f => `<button type="button" data-flex="${f[0]}" class="${f[0] === flex.value ? 'on' : ''}">${f[1]}</button>`).join('')
+      + `</div></div><div class="cal-foot"><button type="button" class="clear" data-act="clear">Clear dates</button>
+         <button type="button" class="done" data-act="done">${round && dep.value && !ret.value ? 'Next' : 'Done'}</button></div>`;
+    cal.innerHTML = html;
+  }
+  function openCal(which) {
+    phase = which === 'return' && dep.value && form.trip.value === 'Round trip' ? 'return' : 'depart';
+    const base = parse(phase === 'return' ? (ret.value || dep.value) : (dep.value || today));
+    view = new Date(base.getFullYear(), base.getMonth(), 1);
+    cal.hidden = false;
+    renderCal();
+    renderFields();
+    cal.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  function closeCal() { cal.hidden = true; renderFields(); }
+  function resetDates() { dep.value = ''; ret.value = ''; flex.value = 'Exact dates'; phase = 'depart'; closeCal(); }
+  function pickDay(s) {
+    msg.textContent = '';
+    if (phase === 'depart') {
+      dep.value = s;
+      if (ret.value && ret.value < s) ret.value = '';
+      if (form.trip.value === 'Round trip') phase = 'return';
+    } else {
+      ret.value = s;
+    }
+    renderCal();
+    renderFields();
+  }
+  cal.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b || b.disabled) return;
+    if (b.dataset.d) pickDay(b.dataset.d);
+    else if (b.dataset.nav) { view = new Date(view.getFullYear(), view.getMonth() + Number(b.dataset.nav), 1); renderCal(); }
+    else if (b.dataset.flex) { flex.value = b.dataset.flex; renderCal(); renderFields(); }
+    else if (b.dataset.act === 'clear') { dep.value = ''; ret.value = ''; phase = 'depart'; renderCal(); renderFields(); }
+    else if (b.dataset.act === 'done') {
+      if (form.trip.value === 'Round trip' && dep.value && !ret.value) { phase = 'return'; renderCal(); renderFields(); }
+      else { closeCal(); form.travelers.focus(); }
+    }
+  });
+  departBtn.addEventListener('click', () => (!cal.hidden && phase === 'depart') ? closeCal() : openCal('depart'));
+  returnBtn.addEventListener('click', () => (!cal.hidden && phase === 'return') ? closeCal() : openCal('return'));
+  document.getElementById('dates').addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !cal.hidden) { e.stopPropagation(); closeCal(); (phase === 'return' ? returnBtn : departBtn).focus(); }
+  });
+  document.addEventListener('mousedown', e => { if (!cal.hidden && !e.target.closest('#dates')) closeCal(); });
+  window.addEventListener('resize', () => { if (!cal.hidden) renderCal(); });
+  syncTrip();
+
+  // City / airport suggestions from the first letter typed.
+  const METROS = [
+    ['NYC', 'New York', 'US', ['JFK', 'EWR', 'LGA']], ['LON', 'London', 'GB', ['LHR', 'LGW', 'STN', 'LTN', 'LCY', 'SEN']],
+    ['PAR', 'Paris', 'FR', ['CDG', 'ORY']], ['CHI', 'Chicago', 'US', ['ORD', 'MDW']], ['WAS', 'Washington', 'US', ['IAD', 'DCA', 'BWI']],
+    ['TYO', 'Tokyo', 'JP', ['HND', 'NRT']], ['MIL', 'Milan', 'IT', ['MXP', 'LIN', 'BGY']], ['ROM', 'Rome', 'IT', ['FCO', 'CIA']],
+    ['MOW', 'Moscow', 'RU', ['SVO', 'DME', 'VKO']], ['SAO', 'São Paulo', 'BR', ['GRU', 'CGH', 'VCP']], ['RIO', 'Rio de Janeiro', 'BR', ['GIG', 'SDU']],
+    ['BUE', 'Buenos Aires', 'AR', ['EZE', 'AEP']], ['OSA', 'Osaka', 'JP', ['KIX', 'ITM']], ['SEL', 'Seoul', 'KR', ['ICN', 'GMP']],
+    ['STO', 'Stockholm', 'SE', ['ARN', 'BMA']], ['BJS', 'Beijing', 'CN', ['PEK', 'PKX']], ['YTO', 'Toronto', 'CA', ['YYZ', 'YTZ']],
+    ['JKT', 'Jakarta', 'ID', ['CGK', 'HLP']], ['DTT', 'Detroit', 'US', ['DTW']]
+  ];
+  let regionName = c => c;
+  try { const dn = new Intl.DisplayNames(['en'], { type: 'region' }); regionName = c => dn.of(c) || c; } catch {}
+  let INDEX = null;
+  function loadAirports() {
+    if (window.AIRPORTS || document.getElementById('airportsJs')) return;
+    const s = document.createElement('script');
+    s.src = 'airports.js'; s.id = 'airportsJs'; s.async = true;
+    s.onload = () => document.dispatchEvent(new Event('airports-ready'));
+    document.head.appendChild(s);
+  }
+  function buildIndex() {
+    if (INDEX || !window.AIRPORTS) return INDEX;
+    INDEX = window.AIRPORTS.map(([code, name, city, cc, size]) => {
+      const c = city.replace(/\s*\(.*\)\s*$/, '').trim() || name;
+      return { kind: 'apt', code, name, city: c, cc, size, country: regionName(cc),
+               lc: code.toLowerCase(), lcity: c.toLowerCase(), lname: name.toLowerCase(), lfull: city.toLowerCase() };
+    });
+    METROS.forEach(([code, city, cc, codes]) => INDEX.push({ kind: 'metro', code, city, cc, codes, size: 3, country: regionName(cc),
+      name: 'All airports', lc: code.toLowerCase(), lcity: city.toLowerCase(), lname: '', lfull: city.toLowerCase() }));
+    return INDEX;
+  }
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  function score(a, q) {
+    const b = a.kind === 'metro' ? 12 : a.size * 3;
+    if (a.lc === q) return 100 + b;
+    const city = norm(a.lcity), name = norm(a.lname);
+    if (city.startsWith(q)) return 70 + b;
+    if (name.startsWith(q)) return 55 + b;
+    if (q.length > 1 && (' ' + city).includes(' ' + q)) return 45 + b;
+    if (q.length > 1 && (' ' + name).includes(' ' + q)) return 40 + b;
+    if (q.length > 2 && (name.includes(q) || norm(a.lfull).includes(q))) return 25 + b;
+    if (q.length > 2 && norm(a.country).startsWith(q)) return 15 + b;
+    return 0;
+  }
+  function search(q) {
+    const idx = buildIndex();
+    if (!idx) return null;
+    q = norm(q);
+    if (!q) return [];
+    const hits = [];
+    for (const a of idx) { const s = score(a, q); if (s) hits.push([s, a]); }
+    hits.sort((x, y) => y[0] - x[0] || y[1].size - x[1].size || x[1].city.localeCompare(y[1].city));
+    const top = hits.slice(0, 8).map(h => h[1]);
+    // Put each city's airports right under its "all airports" entry.
+    const metros = top.filter(a => a.kind === 'metro');
+    const out = [];
+    for (const a of top) {
+      if (a.kind === 'apt' && metros.some(m => m.codes.includes(a.code))) continue;
+      out.push(a);
+      if (a.kind === 'metro') a.codes.forEach(c => { const ap = idx.find(x => x.kind === 'apt' && x.code === c); if (ap) out.push(Object.assign({ sub: true }, ap)); });
+    }
+    return out.slice(0, 10);
+  }
+  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function hl(text, q) {
+    const t = norm(text), i = q ? t.indexOf(norm(q)) : -1;
+    if (i < 0) return esc(text);
+    return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.trim().length)) + '</mark>' + esc(text.slice(i + q.trim().length));
+  }
+  const ICON_PLANE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>';
+  const ICON_CITY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 21V9l6-4v4l6-4v16H3zm14 0V3h4v18h-4zM6 12v2h2v-2H6zm0 4v2h2v-2H6zm4-4v2h2v-2h-2zm0 4v2h2v-2h-2z"/></svg>';
+  function label(a) { return a.kind === 'metro' ? `${a.city}, all airports (${a.code})` : `${a.city} (${a.code})`; }
+
+  function setupAC(input) {
+    const list = document.getElementById(input.getAttribute('aria-controls'));
+    let items = [], active = -1;
+    function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); active = -1; }
+    function render() {
+      const q = input.value;
+      const res = search(q);
+      if (res === null) { list.innerHTML = '<li class="empty">Loading airports…</li>'; list.hidden = false; return; }
+      items = res;
+      if (!q.trim()) { close(); return; }
+      list.innerHTML = items.length ? items.map((a, i) => `
+        <li role="option" id="${list.id}-${i}" data-i="${i}" class="${a.kind === 'metro' ? 'city' : ''} ${a.sub ? 'sub' : ''}" aria-selected="false">
+          <span class="ic">${a.kind === 'metro' ? ICON_CITY : ICON_PLANE}</span>
+          <span class="tx"><b>${a.kind === 'metro' ? hl(a.city, q) + ' <span style="font-weight:400;color:#8a919c">· all airports</span>' : hl(a.city, q)}</b>
+            <small>${a.kind === 'metro' ? esc(a.country) : hl(a.name, q) + ' · ' + esc(a.country)}</small></span>
+          <span class="code">${a.code}</span></li>`).join('')
+        : '<li class="empty">No match. You can still type any city.</li>';
+      list.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      move(items.length ? 0 : -1);
+    }
+    function move(i) {
+      const lis = list.querySelectorAll('li[role="option"]');
+      lis.forEach(li => li.setAttribute('aria-selected', 'false'));
+      active = i;
+      if (lis[i]) { lis[i].setAttribute('aria-selected', 'true'); lis[i].scrollIntoView({ block: 'nearest' }); input.setAttribute('aria-activedescendant', lis[i].id); }
+      else input.removeAttribute('aria-activedescendant');
+    }
+    function pick(i) {
+      const a = items[i];
+      if (!a) return;
+      input.value = label(a);
+      close();
+      const next = input === form.from ? form.to : departBtn;
+      next.focus();
+      if (next === departBtn && !dep.value) openCal('depart');
+    }
+    input.addEventListener('focus', loadAirports);
+    input.addEventListener('input', render);
+    input.addEventListener('keydown', e => {
+      if (list.hidden) { if (e.key === 'ArrowDown' && input.value) render(); return; }
+      if (e.key === 'ArrowDown') { e.preventDefault(); move(Math.min(active + 1, items.length - 1)); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); move(Math.max(active - 1, 0)); }
+      else if (e.key === 'Enter' && active > -1) { e.preventDefault(); pick(active); }
+      else if (e.key === 'Escape') { e.stopPropagation(); close(); }
+      else if (e.key === 'Tab' && active > -1 && items.length) { input.value = label(items[active]); close(); }
+    });
+    list.addEventListener('mousedown', e => {
+      const li = e.target.closest('li[data-i]');
+      if (li) { e.preventDefault(); pick(+li.dataset.i); }
+    });
+    input.addEventListener('blur', () => setTimeout(close, 120));
+    // Refresh the open list once the airport data arrives.
+    document.addEventListener('airports-ready', () => { if (document.activeElement === input && input.value) render(); });
+  }
+  setupAC(form.from);
+  setupAC(form.to);
+  // Start fetching the airport list as soon as someone opens the quote window.
+  document.querySelectorAll('[data-open-quote]').forEach(b => b.addEventListener('click', loadAirports));
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    msg.textContent = '';
+    if (!form.checkValidity()) {
+      const bad = form.querySelector(':invalid');
+      msg.textContent = bad.type === 'email' && bad.value ? 'Please enter a valid email address.' : 'Please fill in the highlighted fields.';
+      bad.focus();
+      return;
+    }
+    if (!dep.value) { msg.textContent = 'Please choose your departure date.'; openCal('depart'); return; }
+    if (form.trip.value === 'Round trip' && !ret.value) { msg.textContent = 'Please choose a return date.'; openCal('return'); return; }
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      // Web3Forms emails each request straight to sales@joecooper.travel.
+      const data = new FormData(form);
+      // Unique reference so every request gets its own subject line and isn't merged into an earlier email thread.
+      const d = new Date();
+      const ref = 'JC-' + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
+      data.set('reference', ref);
+      const fields = {};
+      data.forEach((v, k) => { if (!['form-name', 'website'].includes(k)) fields[k] = v; });
+      const r = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(Object.assign({
+          access_key: '11c0cf65-a965-4383-a2c8-1908f6f634d3',
+          subject: `New inquiry ${ref} · ${fields.name} · ${fields.from} → ${fields.to} (${fields.travelers} pax, ${fields.cabin})`,
+          from_name: 'joecooper.travel',
+          replyto: fields.email,
+          botcheck: data.get('website') || ''
+        }, fields))
+      });
+      const j = await r.json();
+      if (!j.success) throw new Error('web3forms');
+      document.getElementById('refNo').textContent = ref;
+      sheet.classList.add('sent');
+      sheet.scrollTop = 0;
+    } catch {
+      msg.textContent = 'Something went wrong. Please email sales@joecooper.travel or call (630) 566-5249.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Get my options';
+    }
+  });
+
+  // Reveal sections as they scroll into view.
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: .15 }) : null;
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 3) * 0.12 + 's';
+    // Drop the stagger once revealed so hover/active effects respond instantly.
+    el.addEventListener('transitionend', () => { el.style.transitionDelay = ''; }, { once: true });
+    io ? io.observe(el) : el.classList.add('in');
+  });
+
+  // How it works: steps light up in turn; hover, click or keyboard picks one.
+  const steps = [...document.querySelectorAll('.how .card')];
+  const dots = [...document.querySelectorAll('.stepper button')];
+  const bar = document.querySelector('.stepper .bar');
+  let cur = 0, timer = null;
+  function setStep(i) {
+    cur = i;
+    steps.forEach((c, k) => c.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k <= i));
+    bar.style.width = (i / (steps.length - 1)) * 100 + '%';
+  }
+  function play() { stop(); timer = setInterval(() => setStep((cur + 1) % steps.length), 4000); }
+  function stop() { clearInterval(timer); timer = null; }
+  steps.forEach((c, i) => {
+    c.addEventListener('mouseenter', () => { stop(); setStep(i); });
+    c.addEventListener('mouseleave', play);
+    // Any step card opens the quote window.
+    const go = () => { stop(); setStep(i); loadAirports(); openQuote(c); };
+    c.addEventListener('click', go);
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    c.setAttribute('role', 'button');
+    c.setAttribute('aria-label', c.querySelector('h3').textContent + ': request a quote');
+  });
+  dots.forEach((d, i) => d.addEventListener('click', () => { stop(); setStep(i); play(); }));
+  setStep(0);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => { en.isIntersecting ? play() : stop(); }, { threshold: .3 })
+      .observe(document.getElementById('how'));
+  } else play();
+</script>
+</body>
+</html>
