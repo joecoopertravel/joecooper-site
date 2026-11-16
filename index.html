@@ -53,7 +53,7 @@
   .hero h1,.hero p.sub{text-shadow:0 2px 24px rgba(0,0,0,.45)}
   .sky{position:absolute;inset:0;pointer-events:none}
   /* Photo: Andy Wang on Unsplash (Unsplash License), unsplash.com/photos/ogUyaf8JWA4 */
-  .photo{position:absolute;inset:-4%;background:url("https://images.unsplash.com/photo-1768346564233-d71f37bd19b6?w=2000&q=75&fm=jpg&fit=max") center 60%/cover no-repeat;
+  .photo{position:absolute;inset:-4%;background:url("https://images.unsplash.com/photo-1768346564233-d71f37bd19b6?w=1600&q=68&fm=jpg&fit=max") center 60%/cover no-repeat;
          animation:kenburns 28s ease-in-out infinite alternate;will-change:transform}
   @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.08) translateY(-1.5%)}}
   .shade{position:absolute;inset:0;background:
@@ -119,9 +119,10 @@
   .hero .note a{color:var(--gold-2);text-decoration:none}
 
   /* entrance animation */
-  .rise{opacity:0;transform:translateY(26px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  /* visible from the first paint (fast LCP); only a gentle rise, no fade-in from invisible */
+  .rise{transform:translateY(18px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
   .d1{animation-delay:.15s}.d2{animation-delay:.35s}.d3{animation-delay:.55s}.d4{animation-delay:.75s}.d5{animation-delay:.95s}
-  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes rise{to{transform:none}}
 
   .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:#9fb0c4;font-size:11px;letter-spacing:.25em;text-transform:uppercase;text-decoration:none}
   .scroll-hint::after{content:"";display:block;width:1px;height:34px;margin:10px auto 0;background:linear-gradient(var(--gold),transparent);animation:hint 2s ease-in-out infinite}
