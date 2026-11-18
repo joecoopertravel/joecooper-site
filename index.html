@@ -337,9 +337,9 @@
   .cactions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}
   .linkish{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font:13px Inter,sans-serif;padding:0}
   /* "No, that's all" / "Skip": shaped like the REQUEST button, but smaller and quieter */
-  .skip-btn{width:100%;padding:9px;border:1px solid rgba(212,168,83,.55);border-radius:4px;background:#f6efe0;color:#6b5a36;cursor:pointer;
-            font:600 13px Oswald,sans-serif;letter-spacing:.16em;text-transform:uppercase;transition:background .2s,color .2s}
-  .skip-btn:hover,.skip-btn:focus-visible{background:#eedfbf;color:var(--navy);outline:none}
+  .skip-btn{width:100%;padding:13px;border:1px solid rgba(212,168,83,.8);border-radius:4px;background:#ecdcb4;color:#4a3d22;cursor:pointer;
+            font:600 15px Oswald,sans-serif;letter-spacing:.18em;text-transform:uppercase;transition:background .2s,color .2s}
+  .skip-btn:hover,.skip-btn:focus-visible{background:#e2cc96;color:var(--navy);outline:none}
   .cactions:has(.skip-btn){display:block}
   .qr{display:flex;flex-wrap:wrap;gap:8px}
   .qr button{padding:10px 18px;border:1px solid var(--gold);border-radius:22px;background:var(--white);color:var(--navy);font:500 14px Inter,sans-serif;cursor:pointer;transition:.2s}
@@ -1144,7 +1144,8 @@
         + '<span></span>'.repeat(m.getDay());
       for (let d = 1; d <= days; d++) {
         const s = iso(new Date(m.getFullYear(), m.getMonth(), d));
-        const off = s < today || s > maxDate || (phase === 'return' && dep.value && s < dep.value);
+        // Return is at least the day after departure, so a double tap can't set both to the same day.
+        const off = s < today || s > maxDate || (phase === 'return' && dep.value && s <= dep.value);
         const cls = ['d', s === today && 'today', s === dep.value && 'start', s === ret.value && 'end',
           dep.value && ret.value && s > dep.value && s < ret.value && 'in', flexSet.has(s) && 'fl'].filter(Boolean).join(' ');
         html += `<button type="button" class="${cls}" data-d="${s}" ${off ? 'disabled' : ''} aria-label="${nice(s)}">${d}</button>`;
@@ -1379,6 +1380,12 @@
       data.set('reference', ref);
       const fields = {};
       data.forEach((v, k) => { if (!['form-name', 'website'].includes(k)) fields[k] = v; });
+      // Quick chat requests: questions never asked are sent as "?" rather than the form's defaults.
+      if (quick && form.classList.contains('chat-mode')) {
+        if (!answered.has('trip')) fields.trip = '?';
+        if (!answered.has('travelers')) fields.travelers = '?';
+        if (!answered.has('cabin')) fields.cabin = '?';
+      }
       const r = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -1598,7 +1605,7 @@
         clearComposer(); addMe(text); res(text);
       };
       function next() {
-        if (!validate()) { addBot(err); if (input) input.focus(); return; }
+        if (!validate()) { addBot(typeof err === 'function' ? err() : err); if (input) input.focus(); return; }
         done(answer ? answer() : input.value.trim());
       }
       go.addEventListener('click', next, on);
@@ -1616,6 +1623,40 @@
       scrollLog();
     });
   }
+  // Name question. Some clients type their whole trip here ("2 pax DEN-GEO 28 Jan…, me@x.com"):
+  // keep that text as notes, take any email from it, and ask for just the name again.
+  let nameMoved = false;
+  function nameField(t) {
+    return field(wrapOf(form.name), { input: form.name, t,
+      validate: () => {
+        const v = form.name.value.trim();
+        nameMoved = false;
+        if (v.length > 50 || /[@\d]/.test(v) || v.split(/\s+/).length > 5) {
+          const mail = v.match(/[^\s@]+@[^\s@]+\.[a-z]{2,}/i);
+          if (mail && !form.email.value.trim()) form.email.value = mail[0];
+          form.notes.value = (form.notes.value.trim() ? form.notes.value.trim() + '\n' : '') + v;
+          form.name.value = '';
+          nameMoved = true;
+          return false;
+        }
+        return v.length > 1;
+      },
+      err: () => nameMoved ? "Thanks, I've added that to your request 👍 Now just your full name, please." : 'Please type your name.' });
+  }
+  // Which chat questions were really answered, so untouched defaults (2 pax, Business) aren't sent as if chosen.
+  const answered = new Set();
+  function summaryRows(quick) {
+    const has = k => !quick || answered.has(k);
+    const route = form.from.value.trim() || form.to.value.trim() ? `${form.from.value.trim() || '?'} → ${form.to.value.trim() || '?'}` : '';
+    return [has('trip') && ['Trip', form.trip.value], route && ['Route', route], dep.value && ['Dates', datesText()],
+      has('travelers') && ['Travelers', form.travelers.value], has('cabin') && ['Cabin', form.cabin.value],
+      form.budget.value.trim() && ['Budget', form.budget.value.trim()], form.notes.value.trim() && ['Notes', form.notes.value.trim()],
+      ['Name', form.name.value.trim()], ['Email', form.email.value.trim()], form.phone.value.trim() && ['Phone', form.phone.value.trim()]].filter(Boolean);
+  }
+  function showSummary(rows) {
+    const sum = addBot(rows.map(([k, v]) => `<div><span>${k}</span><b>${esc(v)}</b></div>`).join(''));
+    sum.querySelector('.msg').classList.add('sum');
+  }
   const datesText = () => {
     const fx = inp => { const n = flexDays(inp); return n ? ` (± ${n})` : ''; };
     return short(dep.value) + fx(dep) + (ret.value ? ' → ' + short(ret.value) + fx(ret) : '');
@@ -1624,6 +1665,7 @@
   async function startChat() {
     const t = ++chatToken;
     chatStarted = true;
+    answered.clear();
     clearComposer(); chatLog.innerHTML = ''; msg.textContent = '';
     reqNow.hidden = false;
     const live = ok => ok && t === chatToken;
@@ -1638,6 +1680,7 @@
     const trip = await choose(['Round trip', 'One way', 'Multi-city']);
     if (t !== chatToken) return;
     track('chat_trip');
+    answered.add('trip');
     form.querySelector(`input[name="trip"][value="${trip}"]`).checked = true;
     syncTrip();
     const round = trip === 'Round trip';
@@ -1673,10 +1716,12 @@
     if (!live(await say('How many travelers?', t))) return;
     form.travelers.value = await choose(['1', '2', '3', '4', '5', '6+']);
     if (t !== chatToken) return;
+    answered.add('travelers');
 
     if (!live(await say('Which cabin would you like?', t))) return;
     form.cabin.value = await choose(['Business', 'First', 'Premium economy']);
     if (t !== chatToken) return;
+    answered.add('cabin');
 
     // Budget, asked gently: a number to aim for, or "cheapest possible".
     if (!live(await say('Do you have a budget in mind? No pressure, it simply helps me find you something better. 🙂', t))) return;
@@ -1707,7 +1752,7 @@
     if (t !== chatToken) return;
 
     if (!live(await say("Perfect. What's your full name?", t))) return;
-    await field(wrapOf(form.name), { input: form.name, t, validate: () => form.name.value.trim().length > 1, err: 'Please type your name.' });
+    await nameField(t);
     if (t !== chatToken) return;
     const first = form.name.value.trim().split(/\s+/)[0];
 
@@ -1719,13 +1764,9 @@
     await field(wrapOf(form.phone), { input: form.phone, t, optional: true });
     if (t !== chatToken) return;
 
-    const rows = [['Trip', trip], ['Route', `${form.from.value} → ${form.to.value}`], ['Dates', datesText()],
-      ['Travelers', form.travelers.value], ['Cabin', form.cabin.value], form.budget.value.trim() && ['Budget', form.budget.value.trim()],
-      form.notes.value.trim() && ['Notes', form.notes.value.trim()],
-      ['Name', form.name.value.trim()], ['Email', form.email.value.trim()], form.phone.value.trim() && ['Phone', form.phone.value.trim()]].filter(Boolean);
     if (!live(await say("Here's your request. Shall I send it to Joe?", t))) return;
-    const sum = addBot(rows.map(([k, v]) => `<div><span>${k}</span><b>${esc(v)}</b></div>`).join(''));
-    sum.querySelector('.msg').classList.add('sum');
+    lastQuick = false;
+    showSummary(summaryRows(false));
     showSend(t);
   }
   function showSend(t) {
@@ -1761,24 +1802,27 @@
     reqNow.hidden = true;
     track('request_btn');
     addMe('Request');
-    const needName = !form.name.value.trim();
-    const needEmail = !(form.email.value.trim() && form.email.checkValidity());
-    if (needName || needEmail) {
-      const what = needName && needEmail ? 'name and email' : needName ? 'name' : 'email';
-      if (!(await say(`Sure! I just need your ${what} to send it.`, t))) return;
-      if (needName) {
-        if (!(await say("What's your full name?", t))) return;
-        await field(wrapOf(form.name), { input: form.name, t, validate: () => form.name.value.trim().length > 1, err: 'Please type your name.' });
-        if (t !== chatToken) return;
-      }
-      if (needEmail) {
-        if (!(await say("And the best email for your options?", t))) return;
-        await field(wrapOf(form.email), { input: form.email, t, validate: () => form.email.value.trim() && form.email.checkValidity(), err: 'That email doesn’t look right. Could you check it?' });
-        if (t !== chatToken) return;
-      }
+    // No route yet: let them describe the trip in their own words first.
+    if (!form.from.value.trim() && !form.to.value.trim() && !form.notes.value.trim()) {
+      if (!(await say('Sure! Tell me about your trip in a few words: from where to where, dates, how many travelers.', t))) return;
+      await field(wrapOf(form.notes), { input: form.notes, t, validate: () => form.notes.value.trim().length > 3, err: 'Just a few words about the trip, e.g. “Denver to London, 2 people, early March”.' });
+      if (t !== chatToken) return;
     }
-    if (!(await say('Perfect, sending your request to Joe now.', t))) return;
-    sendNow(true);
+    if (!form.name.value.trim()) {
+      if (!(await say("What's your full name?", t))) return;
+      await nameField(t);
+      if (t !== chatToken) return;
+    }
+    if (!(form.email.value.trim() && form.email.checkValidity())) {
+      if (!(await say("And the best email for your options?", t))) return;
+      await field(wrapOf(form.email), { input: form.email, t, validate: () => form.email.value.trim() && form.email.checkValidity(), err: 'That email doesn’t look right. Could you check it?' });
+      if (t !== chatToken) return;
+    }
+    // Always show what will be sent, so a wrong date or route can be fixed before it reaches Joe.
+    if (!(await say("Here's what I'll send to Joe. All correct?", t))) return;
+    lastQuick = true;
+    showSummary(summaryRows(true));
+    showSend(t);
   }
   reqNow.addEventListener('click', quickRequest);
   // Errors from the submit handler appear as a concierge message, with a retry.
