@@ -691,14 +691,21 @@
   .alert-card.sent .ok b{color:var(--gold-2)}
   @media(max-width:700px){.alert-form{grid-template-columns:1fr}.alert-form .em{grid-column:auto}.alert-card{padding:34px 20px}}
   /* "not ready yet?" nudge after someone closes the request window without sending */
-  .nudge{position:fixed;left:50%;bottom:24px;z-index:45;transform:translate(-50%,140%);transition:transform .4s cubic-bezier(.2,.7,.2,1);
-         display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);width:max-content;padding:14px 16px 14px 20px;border-radius:10px;
-         background:var(--navy-2);border:1px solid rgba(212,168,83,.45);color:#e9edf2;font-size:14.5px;box-shadow:0 18px 40px rgba(0,0,0,.4)}
-  .nudge.show{transform:translate(-50%,0)}
-  .nudge .btn{padding:10px 16px;font-size:14px;white-space:nowrap}
-  .nudge .nx{background:none;border:0;color:#9fb0c4;font-size:22px;line-height:1;cursor:pointer;padding:0 2px}
-  @media(max-width:600px){.nudge{bottom:calc(16px + env(safe-area-inset-bottom));left:16px;right:96px;transform:translateY(160%);width:auto;max-width:none;flex-wrap:wrap;gap:10px;font-size:14px}
-    .nudge.show{transform:none}}
+  /* fare-alert banner: slides in from the left side */
+  .nudge{position:fixed;left:24px;bottom:24px;z-index:45;width:300px;max-width:calc(100% - 32px);transform:translateX(calc(-100% - 40px));
+         transition:transform .5s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:20px 20px 18px;
+         border-radius:12px;background:linear-gradient(160deg,#16294a,var(--navy-2));border:1px solid rgba(212,168,83,.45);border-left:4px solid var(--gold);
+         color:#d5dbe3;font-size:14.5px;line-height:1.45;box-shadow:0 22px 50px rgba(0,0,0,.5)}
+  .nudge[hidden]{display:none}
+  .nudge.show{transform:none}
+  .nudge .n-head{display:flex;align-items:center;gap:10px;padding-right:20px}
+  .nudge .n-head strong{font:600 15px Oswald,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-2)}
+  .nudge .n-bell{width:34px;height:34px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,168,83,.5);color:var(--gold-2)}
+  .nudge .n-bell svg{width:17px;height:17px}
+  .nudge .btn{justify-content:center;padding:12px 16px;font-size:14.5px;margin-top:4px}
+  .nudge .nx{position:absolute;top:8px;right:10px;background:none;border:0;color:#9fb0c4;font-size:22px;line-height:1;cursor:pointer;padding:0 2px}
+  .nudge .nx:hover{color:#fff}
+  @media(max-width:600px){.nudge{left:12px;right:96px;width:auto;bottom:calc(16px + env(safe-area-inset-bottom));padding:16px 16px 14px;font-size:14px}}
 
   @media (prefers-reduced-motion: reduce){
     .reveal{filter:none}
@@ -961,9 +968,11 @@
 </a>
 
 <div class="nudge" id="nudge" role="status" hidden>
+  <button class="nx" type="button" id="nudgeX" aria-label="Dismiss">×</button>
+  <div class="n-head"><span class="n-bell" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+    <strong>Fare alerts</strong></div>
   <span id="nudgeText">Not ready yet? Get fare alerts for your route.</span>
   <button class="btn btn-gold" type="button" id="nudgeGo">Get alerts</button>
-  <button class="nx" type="button" id="nudgeX" aria-label="Dismiss">×</button>
 </div>
 
 <!-- ================= BLACK FRIDAY POP-UP (shown once per visit until Dec 1) ================= -->
@@ -1137,7 +1146,20 @@
     requestAnimationFrame(() => requestAnimationFrame(() => nudge.classList.add('show')));
     track('nudge_shown');
   }
-  function hideNudge() { nudge.classList.remove('show'); setTimeout(() => { nudge.hidden = true; }, 400); }
+  function hideNudge() { nudge.classList.remove('show'); setTimeout(() => { nudge.hidden = true; }, 500); }
+  // Also offered to browsers who never open the request window: once they've scrolled
+  // past the first screen and been on the page 25 seconds, unless a window is open.
+  (function () {
+    let scrolled = false, timeUp = false;
+    const tryShow = () => {
+      if (!scrolled || !timeUp || nudged) return;
+      const bf = document.getElementById('bfPop');
+      if (!modal.hidden || (bf && !bf.hidden)) { setTimeout(tryShow, 4000); return; }
+      showNudge();
+    };
+    addEventListener('scroll', function f() { if (scrollY > innerHeight * 0.8) { scrolled = true; removeEventListener('scroll', f); tryShow(); } }, { passive: true });
+    setTimeout(() => { timeUp = true; tryShow(); }, 25000);
+  })();
   document.getElementById('nudgeX').addEventListener('click', hideNudge);
   document.getElementById('nudgeGo').addEventListener('click', () => {
     track('nudge_click');
