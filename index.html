@@ -120,16 +120,24 @@
   .cta-big svg{width:22px;height:22px;vertical-align:-4px;margin-left:10px;transition:transform .25s}
   .cta-big:hover svg{transform:translateX(5px)}
   @keyframes pulse{0%{transform:scale(1);opacity:.9}70%,100%{transform:scale(1.12,1.45);opacity:0}}
-  /* Black Friday offer badge */
-  .bf{display:inline-flex;align-items:center;gap:12px;margin:0 auto clamp(18px,3vh,28px);padding:7px 18px 7px 7px;border:1px dashed rgba(236,199,122,.8);
-      border-radius:40px;background:rgba(7,17,29,.6);color:#f1e7cf;font:500 14px Inter,sans-serif;cursor:pointer;transition:background .2s,border-color .2s;max-width:100%}
-  .bf:hover{background:rgba(212,168,83,.16);border-color:var(--gold-2)}
-  .bf[hidden]{display:none}
-  .bf-tag{flex:none;background:#000;color:var(--gold-2);border:1px solid var(--gold);border-radius:30px;padding:5px 12px;font:600 11px Oswald,sans-serif;letter-spacing:.18em;text-transform:uppercase}
-  .bf b{color:var(--gold-2);font-weight:600}
-  .bf-code{letter-spacing:.08em}
-  .hero .bf + div{margin-top:0}
-  @media(max-width:600px){.bf{flex-direction:column;gap:6px;padding:8px 14px 10px;border-radius:12px;font-size:13px;text-align:center}}
+  /* Black Friday pop-up */
+  .bfpop{position:fixed;inset:0;z-index:55;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(5,12,22,.78);
+         opacity:0;transition:opacity .3s}
+  .bfpop[hidden]{display:none}
+  .bfpop.open{opacity:1}
+  .bfbox{position:relative;width:100%;max-width:560px;max-height:calc(100vh - 40px);overflow:auto;text-align:center;color:#e9edf2;padding:52px clamp(22px,6vw,48px) 30px;border-radius:14px;
+         background:radial-gradient(ellipse at 50% 0%,rgba(212,168,83,.22),transparent 60%),linear-gradient(160deg,#13243a,#0b1726);
+         border:1px solid rgba(212,168,83,.55);box-shadow:0 30px 80px rgba(0,0,0,.55);transform:translateY(24px) scale(.96);transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .bfpop.open .bfbox{transform:none}
+  .bfbox .x{position:absolute;top:10px;right:14px}
+  .bf-tag{display:inline-block;background:#000;color:var(--gold-2);border:1px solid var(--gold);border-radius:30px;padding:8px 22px;font:600 14px Oswald,sans-serif;letter-spacing:.24em;text-transform:uppercase}
+  .bfbox h3{font:500 clamp(46px,10vw,66px)/1 "Cormorant Garamond",Georgia,serif;text-transform:none;letter-spacing:0;margin:22px 0 14px;color:var(--gold-2)}
+  .bfbox h3 em{display:block;font-style:italic;font-size:.6em;color:#fff;margin-top:6px}
+  .bfbox p{color:#c2ccd8;font-size:17px}
+  .bf-coupon{margin:14px auto 26px;width:max-content;max-width:100%;padding:12px 34px;border:2px dashed var(--gold);border-radius:10px;font:600 clamp(32px,8vw,42px) Oswald,sans-serif;letter-spacing:.2em;color:#fff;background:rgba(212,168,83,.08)}
+  .bf-go{width:100%;padding:22px 20px;font-size:19px;animation:none}
+  .bfbox .bf-fine{font-size:12.5px;color:#8696a8;margin-top:16px;line-height:1.5}
+  .bf-no{margin-top:12px;color:#8696a8;font-size:14px}
   .hero .note{margin-top:20px;font-size:14px;color:#9fb0c4}
   .hero .note a{color:var(--gold-2);text-decoration:none}
 
@@ -733,12 +741,7 @@
     <div class="eyebrow rise d1">Private travel service</div>
     <h1 class="rise d2"><span class="l1">Business &amp; first class</span><span class="l2">Joe Cooper Travel</span></h1>
     <div class="divider rise d3"></div>
-    <p class="sub rise d3">No promo-fare gimmicks. No endless calls.<br>Real business class deals, sent to your inbox within 1 hour.</p>
-    <button type="button" class="bf rise d4" id="bfBadge" data-open-quote>
-      <span class="bf-tag">Black Friday</span>
-      <span class="bf-txt"><b>$200 off</b> your business class booking · code <b class="bf-code">JOE200</b> · book by Dec&nbsp;1</span>
-    </button>
-    <div class="rise d4">
+    <p class="sub rise d3">No promo-fare gimmicks. No endless calls.<br>Real business class deals, sent to your inbox within 1 hour.</p>    <div class="rise d4">
       <button class="cta-big" type="button" data-open-quote>Request a quote
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </button>
@@ -963,6 +966,20 @@
   <button class="nx" type="button" id="nudgeX" aria-label="Dismiss">×</button>
 </div>
 
+<!-- ================= BLACK FRIDAY POP-UP (shown once per visit until Dec 1) ================= -->
+<div class="bfpop" id="bfPop" role="dialog" aria-modal="true" aria-labelledby="bfTitle" hidden>
+  <div class="bfbox">
+    <button class="x" type="button" data-bf-close aria-label="Close">×</button>
+    <span class="bf-tag">Black Friday</span>
+    <h3 id="bfTitle">$200 off <em>your business class trip</em></h3>
+    <p>Request your quote this week and use my code:</p>
+    <div class="bf-coupon">JOE200</div>
+    <button class="cta-big bf-go" type="button" id="bfGo">Claim my $200 off</button>
+    <p class="bf-fine">$200 off one business class booking made with Joe Cooper by December 1, 2026. One code per booking; can't be exchanged for cash.</p>
+    <button class="linkish bf-no" type="button" data-bf-close>No thanks</button>
+  </div>
+</div>
+
 <!-- ================= QUOTE MODAL ================= -->
 <div class="modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="qTitle" hidden>
   <div class="sheet" id="sheet">
@@ -1162,7 +1179,26 @@
   const maxDate = addDays(today, 365);
   // Black Friday offer: $200 off with code JOE200 for bookings made by Dec 1, 2026. Hides itself afterwards.
   const PROMO = 'JOE200', promoOn = today <= '2026-12-01';
-  if (!promoOn) document.getElementById('bfBadge').hidden = true;
+  // Pop-up: 5 seconds after the page opens, once per visit, never on top of the request window
+  // or for visitors arriving from an email link that opens the chat straight away.
+  (function () {
+    const pop = document.getElementById('bfPop');
+    let seen = false;
+    try { seen = !!sessionStorage.getItem('bfSeen'); } catch {}
+    const close = () => { pop.classList.remove('open'); setTimeout(() => { pop.hidden = true; }, 300); };
+    function show() {
+      if (!modal.hidden) return;
+      pop.hidden = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => pop.classList.add('open')));
+      track('bf_shown');
+      try { sessionStorage.setItem('bfSeen', '1'); } catch {}
+      document.getElementById('bfGo').focus({ preventScroll: true });
+    }
+    if (promoOn && !seen && !new URLSearchParams(location.search).has('quote')) setTimeout(show, 5000);
+    pop.addEventListener('click', e => { if (e.target === pop || e.target.closest('[data-bf-close]')) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) close(); });
+    document.getElementById('bfGo').addEventListener('click', () => { track('bf_claim'); close(); loadAirports(); openQuote(null); });
+  })();
   const dep = form.depart;
   const flexDep = document.getElementById('flexDep'), flexRet = document.getElementById('flexRet');
   const flexOf = inp => (inp === dep ? flexDep : flexRet);
