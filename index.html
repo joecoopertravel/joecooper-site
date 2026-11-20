@@ -10,9 +10,14 @@
 <meta property="og:description" content="Request a quote and get hand-picked business class options within 1 hour.">
 <meta property="og:url" content="https://joecooper.travel/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%230d1b2a%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-size=%2728%27 text-anchor=%27middle%27 fill=%27%23c9a45c%27 font-family=%27Georgia%27%3EJC%3C/text%3E%3C/svg%3E">
+<!-- Speed: the hero photo starts downloading at once, and the web fonts no longer block the first paint. -->
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="preload" as="image" fetchpriority="high" media="(max-width:860px)" href="https://images.unsplash.com/photo-1768346564233-d71f37bd19b6?w=900&q=60&fm=jpg&fit=max">
+<link rel="preload" as="image" fetchpriority="high" media="(min-width:861px)" href="https://images.unsplash.com/photo-1768346564233-d71f37bd19b6?w=1600&q=68&fm=jpg&fit=max">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500;600&family=Inter:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 <style>
   :root{
     --navy:#0b1726; --navy-2:#13243a; --navy-3:#1c3352; --gold:#d4a853; --gold-2:#ecc77a;
@@ -115,6 +120,16 @@
   .cta-big svg{width:22px;height:22px;vertical-align:-4px;margin-left:10px;transition:transform .25s}
   .cta-big:hover svg{transform:translateX(5px)}
   @keyframes pulse{0%{transform:scale(1);opacity:.9}70%,100%{transform:scale(1.12,1.45);opacity:0}}
+  /* Black Friday offer badge */
+  .bf{display:inline-flex;align-items:center;gap:12px;margin:0 auto clamp(18px,3vh,28px);padding:7px 18px 7px 7px;border:1px dashed rgba(236,199,122,.8);
+      border-radius:40px;background:rgba(7,17,29,.6);color:#f1e7cf;font:500 14px Inter,sans-serif;cursor:pointer;transition:background .2s,border-color .2s;max-width:100%}
+  .bf:hover{background:rgba(212,168,83,.16);border-color:var(--gold-2)}
+  .bf[hidden]{display:none}
+  .bf-tag{flex:none;background:#000;color:var(--gold-2);border:1px solid var(--gold);border-radius:30px;padding:5px 12px;font:600 11px Oswald,sans-serif;letter-spacing:.18em;text-transform:uppercase}
+  .bf b{color:var(--gold-2);font-weight:600}
+  .bf-code{letter-spacing:.08em}
+  .hero .bf + div{margin-top:0}
+  @media(max-width:600px){.bf{flex-direction:column;gap:6px;padding:8px 14px 10px;border-radius:12px;font-size:13px;text-align:center}}
   .hero .note{margin-top:20px;font-size:14px;color:#9fb0c4}
   .hero .note a{color:var(--gold-2);text-decoration:none}
 
@@ -380,6 +395,32 @@
   .send-final{width:100%;justify-content:center;padding:16px;font:600 16px Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase}
   .chat .fine-c{font-size:12px;color:#8a919c;margin-top:8px;line-height:1.5}
   .sheet.sent .chat{display:none}
+  /* Kayak-style flight grid inside the chat */
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #d9d4c8;border-radius:8px;background:#fdfcf9;position:relative}
+  .fgrid > .trip{grid-column:1/-1;gap:6px;padding:10px 12px;border-bottom:1px solid #e7e1d3}
+  .fgrid .trip span{padding:6px 12px;font-size:11.5px}
+  .fgrid .f{padding:8px 12px 9px;border-bottom:1px solid #e7e1d3;transition:background .2s}
+  .fgrid .f:focus-within{background:#fff8ea}
+  .composer .fgrid .f > label{position:static;width:auto;height:auto;clip:auto;overflow:visible;font:600 10.5px Inter,sans-serif;letter-spacing:.14em;
+                              text-transform:uppercase;color:#9a7b3c;margin-bottom:1px}
+  .fgrid .f input,.fgrid .f select,.fgrid .dfield{border:0;background:transparent;padding:3px 0;min-height:0;box-shadow:none!important;font:500 15.5px Inter,sans-serif;color:var(--ink)}
+  .fgrid .f select{cursor:pointer}
+  .fgrid .ac:has(#to),.fgrid #retWrap,.fgrid .f:has(#cabin){border-left:1px solid #e7e1d3}
+  .fgrid .f:has(#pax),.fgrid .f:has(#cabin){border-bottom:0}
+  .chat .fgrid .dates{grid-column:1/-1;gap:0}
+  .chat .fgrid .dates:has(#retWrap.hide){grid-template-columns:1fr}
+  .chat .fgrid .ac-list{top:calc(100% + 2px);bottom:auto}
+  .chat .fgrid #cal{margin:0;border:0;border-bottom:1px solid #e7e1d3;border-radius:0;background:#fff}
+  .chat .fgrid .cal-months{gap:16px}
+  .chat .fgrid .cal-m{flex:1;min-width:0}
+  .chat .fgrid #cal .cal-grid{grid-template-columns:repeat(7,1fr)}
+  .grid-err{color:#b4462f;font-size:13.5px;margin:8px 2px 0}
+  .grid-err:empty{display:none}
+  .grid-go{width:100%;justify-content:center;margin-top:10px;padding:14px;font:600 15px Oswald,sans-serif;letter-spacing:.18em;text-transform:uppercase}
+  .grid-go svg{width:18px;height:18px}
+  .qr.prefs{margin-bottom:10px}
+  .qr.prefs button{padding:7px 14px;font-size:13px}
+  .qr.prefs button.on{background:#f6efe0}
 
   /* custom date picker with built-in flexibility */
   .dates{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative}
@@ -623,6 +664,16 @@
   .alert-form input::placeholder{color:#7d8a9a}
   .alert-form input:focus,.alert-form select:focus{outline:none;border-color:var(--gold)}
   .alert-form .em{grid-column:1 / 3}
+  .alert-form .ac-list{min-width:300px}
+  .alert-form .ac-list .tx b{color:var(--ink)}
+  .aw{position:relative}
+  .a-dbtn{width:100%;display:flex;align-items:center;gap:8px;padding:13px 14px;border:1px solid rgba(212,168,83,.3);background:rgba(7,17,29,.55);color:#fff;
+          font:15px Inter,sans-serif;border-radius:4px;cursor:pointer;text-align:left;transition:border-color .2s}
+  .a-dbtn:hover,.a-dbtn.on{border-color:var(--gold)}
+  .a-dbtn svg{width:17px;height:17px;margin-left:auto;color:var(--gold-2);flex:none}
+  .a-cal{left:auto;right:0;max-width:none;color:var(--ink);text-align:left}
+  .a-cal .cal-foot .clear{color:var(--muted)}
+  @media(max-width:700px){.a-cal{left:0;right:0;width:auto}}
   .alert-form .btn{align-self:end;justify-content:center;padding:14px 20px;height:48px}
   .alert-card .fine-a{margin-top:16px;font-size:12.5px;color:#8696a8}
   .alert-card .err{min-height:0;margin-top:10px;color:#f3b7a3;font-size:14px}
@@ -683,6 +734,10 @@
     <h1 class="rise d2"><span class="l1">Business &amp; first class</span><span class="l2">Joe Cooper Travel</span></h1>
     <div class="divider rise d3"></div>
     <p class="sub rise d3">No promo-fare gimmicks. No endless calls.<br>Real business class deals, sent to your inbox within 1 hour.</p>
+    <button type="button" class="bf rise d4" id="bfBadge" data-open-quote>
+      <span class="bf-tag">Black Friday</span>
+      <span class="bf-txt"><b>$200 off</b> your business class booking · code <b class="bf-code">JOE200</b> · book by Dec&nbsp;1</span>
+    </button>
     <div class="rise d4">
       <button class="cta-big" type="button" data-open-quote>Request a quote
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -778,7 +833,7 @@
 <section id="about" class="about">
   <div class="wrap about-grid">
     <figure class="photo-card reveal">
-      <div class="ph"><img src="joecooper.png" alt="Joe Cooper, private business class travel advisor" width="512" height="512" loading="lazy"
+      <div class="ph"><img src="joecooper.jpg" alt="Joe Cooper, private business class travel advisor" width="512" height="512" loading="lazy" decoding="async"
            onerror="this.closest('figure').classList.add('nophoto')"></div>
       <span class="initials" aria-hidden="true">JC</span>
       <figcaption><strong>Joe Cooper</strong><span>Private travel advisor · 10+ years</span></figcaption>
@@ -830,9 +885,16 @@
       <p class="lead">Tell me the route. When a good business class fare shows up, I'll email it to you personally. No spam, no obligation.</p>
       <form class="alert-form" id="alertForm" novalidate>
         <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
-        <div><label for="aFrom">From</label><input id="aFrom" name="from" placeholder="e.g. Chicago" autocomplete="off" maxlength="80"></div>
-        <div><label for="aTo">To</label><input id="aTo" name="to" placeholder="e.g. Rome" autocomplete="off" maxlength="80"></div>
-        <div><label for="aWhen">When</label><select id="aWhen" name="when"><option>Flexible / any time</option></select></div>
+        <div class="ac"><label for="aFrom">From</label><input id="aFrom" name="from" placeholder="City or airport" autocomplete="off" maxlength="80" spellcheck="false"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="aFrom-list">
+          <ul class="ac-list" id="aFrom-list" role="listbox" hidden></ul></div>
+        <div class="ac"><label for="aTo">To</label><input id="aTo" name="to" placeholder="City or airport" autocomplete="off" maxlength="80" spellcheck="false"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="aTo-list">
+          <ul class="ac-list" id="aTo-list" role="listbox" hidden></ul></div>
+        <div class="aw"><label for="aWhenBtn">Dates</label>
+          <button type="button" class="a-dbtn" id="aWhenBtn" aria-haspopup="dialog"><span>Any dates</span></button>
+          <input type="hidden" name="when" id="aWhen" value="Flexible / any time">
+          <div class="cal a-cal" id="aCal" role="dialog" aria-label="Choose dates" hidden></div></div>
         <div class="em"><label for="aEmail">Your email</label><input id="aEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="120"></div>
         <button class="btn btn-gold" type="submit">Alert me</button>
       </form>
@@ -1098,6 +1160,9 @@
   const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return iso(d); };
   const today = iso(new Date());
   const maxDate = addDays(today, 365);
+  // Black Friday offer: $200 off with code JOE200 for bookings made by Dec 1, 2026. Hides itself afterwards.
+  const PROMO = 'JOE200', promoOn = today <= '2026-12-01';
+  if (!promoOn) document.getElementById('bfBadge').hidden = true;
   const dep = form.depart;
   const flexDep = document.getElementById('flexDep'), flexRet = document.getElementById('flexRet');
   const flexOf = inp => (inp === dep ? flexDep : flexRet);
@@ -1214,7 +1279,8 @@
     renderCal(); renderFields();
   });
   // In the chat the calendar stays open until the dates are confirmed.
-  document.addEventListener('mousedown', e => { if (!cal.hidden && !e.target.closest('#dates') && !form.classList.contains('chat-mode')) closeCal(); });
+  // (In the flight grid it closes like the classic form when you tap another box.)
+  document.addEventListener('mousedown', e => { if (!cal.hidden && !e.target.closest('#dates') && (!form.classList.contains('chat-mode') || datesEl.closest('.fgrid'))) closeCal(); });
   window.addEventListener('resize', () => { if (!cal.hidden) renderCal(); });
   syncTrip();
 
@@ -1325,7 +1391,7 @@
       input.value = label(a);
       close();
       // The concierge chat moves on by itself.
-      if (form.classList.contains('chat-mode')) { input.dispatchEvent(new CustomEvent('picked')); return; }
+      if (form.classList.contains('chat-mode') || input.form !== form) { input.dispatchEvent(new CustomEvent('picked')); return; }
       const next = input === form.from ? form.to : departBtn;
       next.focus();
       if (next === departBtn && !dep.value) openCal('depart');
@@ -1387,6 +1453,11 @@
         if (!answered.has('trip')) fields.trip = '?';
         if (!answered.has('travelers')) fields.travelers = '?';
         if (!answered.has('cabin')) fields.cabin = '?';
+      }
+      // Black Friday: the code goes with the request (email field, and in the notes so the Telegram alert shows it too).
+      if (promoOn) {
+        fields.promo = `${PROMO} ($200 off, Black Friday, book by Dec 1)`;
+        fields.notes = `🎁 ${PROMO} $200 off` + (fields.notes ? ' · ' + fields.notes : '');
       }
       const r = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -1537,18 +1608,22 @@
   const composer = document.getElementById('composer');
   const wrapOf = el => el.closest('.f');
   const datesEl = document.getElementById('dates');
-  const movable = [wrapOf(form.from), wrapOf(form.to), datesEl, wrapOf(form.budget), wrapOf(form.notes), wrapOf(form.name), wrapOf(form.email), wrapOf(form.phone)];
+  const movable = [form.querySelector('.trip'), wrapOf(form.from), wrapOf(form.to), datesEl, wrapOf(form.travelers), wrapOf(form.cabin),
+    wrapOf(form.budget), wrapOf(form.notes), wrapOf(form.name), wrapOf(form.email), wrapOf(form.phone)];
   const home = new Map(movable.map(n => [n, { parent: n.parentNode, next: n.nextSibling }]));
   const ICON_GO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   let chatToken = 0, chatStarted = false, chatDatesNext = null;
 
   function sendHome() { movable.forEach(n => { const h = home.get(n); if (n.parentNode !== h.parent || n.nextSibling !== h.next) h.parent.insertBefore(n, h.next); }); }
-  function clearComposer() { sendHome(); composer.innerHTML = ''; }
+  function clearComposer() {
+    if (gridAC) { gridAC.abort(); gridAC = null; chatDatesNext = null; }
+    sendHome(); composer.innerHTML = '';
+  }
   function scrollLog() { chatLog.scrollTop = chatLog.scrollHeight; }
   function addBot(html) {
     const row = document.createElement('div');
     row.className = 'bot-row';
-    row.innerHTML = `<img src="joecooper.png" alt=""><div class="msg bot">${html}</div>`;
+    row.innerHTML = `<img src="joe-avatar.jpg" alt="" width="30" height="30"><div class="msg bot">${html}</div>`;
     chatLog.appendChild(row); scrollLog();
     return row;
   }
@@ -1653,7 +1728,65 @@
     return [has('trip') && ['Trip', form.trip.value], route && ['Route', route], dep.value && ['Dates', datesText()],
       has('travelers') && ['Travelers', form.travelers.value], has('cabin') && ['Cabin', form.cabin.value],
       form.budget.value.trim() && ['Budget', form.budget.value.trim()], form.notes.value.trim() && ['Notes', form.notes.value.trim()],
-      ['Name', form.name.value.trim()], ['Email', form.email.value.trim()], form.phone.value.trim() && ['Phone', form.phone.value.trim()]].filter(Boolean);
+      ['Name', form.name.value.trim()], ['Email', form.email.value.trim()], form.phone.value.trim() && ['Phone', form.phone.value.trim()],
+      promoOn && ['Offer', `${PROMO} · $200 off`]].filter(Boolean);
+  }
+
+  // Kayak-style search grid for the flight itself. It borrows the real form fields, so airport
+  // suggestions and the calendar work exactly as in the classic form.
+  const tripEl = form.querySelector('.trip');
+  let gridAC = null;
+  function flightGrid(t) {
+    return new Promise(res => {
+      clearComposer();
+      track('ask_grid');
+      const g = document.createElement('div'); g.className = 'fgrid';
+      g.append(tripEl, wrapOf(form.from), wrapOf(form.to), datesEl, wrapOf(form.travelers), wrapOf(form.cabin));
+      const err = document.createElement('p'); err.className = 'grid-err'; err.setAttribute('role', 'alert');
+      const go = document.createElement('button'); go.type = 'button'; go.className = 'btn btn-gold grid-go'; go.innerHTML = 'Continue ' + ICON_GO;
+      composer.append(g, err, go);
+      renderFields();
+      reqNow.hidden = true;   // one clear button while the grid is open
+      gridAC = new AbortController();
+      const on = { signal: gridAC.signal };
+      // Picking an airport moves to the next box; picking the destination opens the calendar.
+      form.from.addEventListener('picked', () => form.to.focus(), on);
+      form.to.addEventListener('picked', () => { if (!dep.value) { departBtn.focus({ preventScroll: true }); openCal('depart'); } }, on);
+      chatDatesNext = () => { closeCal(); err.textContent = ''; };
+      function next() {
+        if (t !== chatToken) return;
+        const round = form.trip.value === 'Round trip';
+        err.textContent = '';
+        if (!form.from.value.trim()) { err.textContent = 'Where are you flying from? Type a city or airport.'; form.from.focus(); return; }
+        if (!form.to.value.trim()) { err.textContent = 'Where would you like to go? Type a city or airport.'; form.to.focus(); return; }
+        if (!dep.value) { err.textContent = 'Please pick your departure date.'; openCal('depart'); return; }
+        if (round && !ret.value) { err.textContent = 'Please pick your return date.'; openCal('return'); return; }
+        ['trip', 'travelers', 'cabin'].forEach(k => answered.add(k));
+        const pax = form.travelers.value;
+        const text = `${form.trip.value}: ${form.from.value.trim()} → ${form.to.value.trim()}, ${datesText()} · ${pax} traveler${pax === '1' ? '' : 's'}, ${form.cabin.value}`;
+        closeCal(); clearComposer(); reqNow.hidden = false; addMe(text); res(text);
+      }
+      go.addEventListener('click', next, on);
+      [form.from, form.to].forEach(inp => inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && inp.getAttribute('aria-expanded') !== 'true') { e.preventDefault(); next(); }
+      }, on));
+      setTimeout(() => (form.from.value.trim() ? (form.to.value.trim() ? departBtn : form.to) : form.from).focus({ preventScroll: true }), 50);
+      scrollLog();
+    });
+  }
+  // Preference shortcuts above the notes box: each tap adds a phrase.
+  function prefChips() {
+    const opts = ['Nonstop only', 'Lie-flat seat', 'Flexible ± 3 days', 'Preferred airline: '];
+    const box = document.createElement('div'); box.className = 'qr prefs';
+    box.innerHTML = opts.map(o => `<button type="button">${esc(o.replace(/: $/, '…'))}</button>`).join('');
+    box.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => {
+      const v = form.notes.value.trim();
+      if (!v.includes(opts[i].trim())) form.notes.value = (v ? v.replace(/[,.]?$/, ', ') : '') + opts[i];
+      b.classList.add('on');
+      form.notes.focus();
+      form.notes.setSelectionRange(form.notes.value.length, form.notes.value.length);
+    }));
+    composer.prepend(box);
   }
   function showSummary(rows) {
     const sum = addBot(rows.map(([k, v]) => `<div><span>${k}</span><b>${esc(v)}</b></div>`).join(''));
@@ -1674,56 +1807,30 @@
     // A route or destination may already be filled in (route buttons, or a link from an email).
     const hasFrom = !!form.from.value.trim(), hasTo = !!form.to.value.trim();
 
-    if (!live(await say(hasFrom && hasTo
-      ? `Hi! I'm Joe's travel concierge ✈️<br>Great choice: <b>${esc(form.from.value)} → ${esc(form.to.value)}</b>. What kind of trip is it?`
-      : hasTo
-      ? `Hi! I'm Joe's travel concierge ✈️<br>Let's find you business class to <b>${esc(form.to.value)}</b>. What kind of trip is it?`
-      : "Hi! I'm Joe's travel concierge ✈️<br>I'll help you get the best business class options. What kind of trip are you planning?", t))) return;
-    const trip = await choose(['Round trip', 'One way', 'Multi-city']);
+    // Step 1: the whole flight in one search grid (trip type, from, to, dates, travelers, cabin).
+    // A region from an email button ("Europe") becomes a hint in the To box instead of a value.
+    const region = (form.to.value.trim().match(/^(Europe|Asia|Australia|Africa|Middle East|South America|Caribbean)$/i) || [])[0];
+    if (region) { form.to.value = ''; form.to.placeholder = `Which city in ${region}?`; }
+    if (!live(await say(hasFrom && hasTo && !region
+      ? `Hi! I'm Joe's travel concierge ✈️<br>Great choice: <b>${esc(form.from.value)} → ${esc(form.to.value)}</b>. Pick your dates below and tap <b>Continue</b>.`
+      : hasTo && !region
+      ? `Hi! I'm Joe's travel concierge ✈️<br>Let's find you business class to <b>${esc(form.to.value)}</b>. Fill in your flight below and tap <b>Continue</b>.`
+      : "Hi! I'm Joe's travel concierge ✈️<br>Fill in your flight below and tap <b>Continue</b>. Then a few quick questions and you're done.", t))) return;
+    await flightGrid(t);
+    form.to.placeholder = 'City or airport';
     if (t !== chatToken) return;
     track('chat_trip');
-    answered.add('trip');
-    form.querySelector(`input[name="trip"][value="${trip}"]`).checked = true;
-    syncTrip();
-    const round = trip === 'Round trip';
+    const trip = form.trip.value;
 
-    if (!hasFrom) {
-      if (!live(await say(trip === 'Multi-city' ? 'Where does your first flight leave from? Type a city or airport.' : 'Where are you flying from? Type a city or airport.', t))) return;
-      await field(wrapOf(form.from), { input: form.from, t, validate: () => form.from.value.trim(), err: 'Please type a city or airport.' });
-      if (t !== chatToken) return;
+    // Step 2: preferences, budget, name, email and phone as a conversation.
+    if (trip === 'Multi-city') {
+      if (!live(await say('Please list your other flights, e.g. “Paris → Rome, Jun 12”, plus any preferences.', t))) return;
+      await field(wrapOf(form.notes), { input: form.notes, t, validate: () => form.notes.value.trim(), err: 'Please list at least one more flight.' });
+    } else {
+      if (!live(await say('Any preferences? Tap what applies or type your own: airline, nonstop, seats, flexible dates…', t))) return;
+      await field(wrapOf(form.notes), { input: form.notes, t, optional: true, skipLabel: 'No preferences', onShow: prefChips });
     }
-    if (!hasTo) {
-      if (!live(await say('And where would you like to go?', t))) return;
-      await field(wrapOf(form.to), { input: form.to, t, validate: () => form.to.value.trim(), err: 'Please type your destination.' });
-      if (t !== chatToken) return;
-    } else if (/^(Europe|Asia|Australia|Africa|Middle East|South America|Caribbean)$/i.test(form.to.value.trim())) {
-      // A region from an email button: ask for the exact city.
-      if (!live(await say(`Which city in ${esc(form.to.value.trim())}? (You can type “not sure yet”.)`, t))) return;
-      const region = form.to.value.trim();
-      form.to.value = '';
-      await field(wrapOf(form.to), { input: form.to, t, validate: () => form.to.value.trim(), err: 'Just type a city, or “not sure yet”.' });
-      if (t !== chatToken) return;
-      if (/not sure/i.test(form.to.value)) form.to.value = `${region} (city not decided)`;
-    }
-
-    if (!live(await say(round ? 'When would you like to fly out, and when are you coming back? Tap your departure, then your return date, and press <b>Confirm dates</b>.'
-      : trip === 'One way' ? 'What date would you like to fly? Tap it in the calendar, then press <b>Confirm dates</b>.'
-      : "When does your first flight leave? Tap the date, then press <b>Confirm dates</b>. You'll list the other legs in a moment.", t))) return;
-    await field(datesEl, { t, onShow: () => openCal('depart'), answer: datesText,
-      validate: () => dep.value && (!round || ret.value),
-      err: round ? 'Please pick both your departure and return dates in the calendar.' : 'Please pick a date in the calendar.' });
     if (t !== chatToken) return;
-    closeCal();
-
-    if (!live(await say('How many travelers?', t))) return;
-    form.travelers.value = await choose(['1', '2', '3', '4', '5', '6+']);
-    if (t !== chatToken) return;
-    answered.add('travelers');
-
-    if (!live(await say('Which cabin would you like?', t))) return;
-    form.cabin.value = await choose(['Business', 'First', 'Premium economy']);
-    if (t !== chatToken) return;
-    answered.add('cabin');
 
     // Budget, asked gently: a number to aim for, or "cheapest possible".
     if (!live(await say('Do you have a budget in mind? No pressure, it simply helps me find you something better. 🙂', t))) return;
@@ -1744,15 +1851,6 @@
       form.budget.value = 'Budget: $' + Number(form.budget.value.replace(/[^\d.]/g, '')).toLocaleString('en-US') + ' per person';
     }
 
-    if (trip === 'Multi-city') {
-      if (!live(await say('Please list your other flights, e.g. “Paris → Rome, Jun 12”.', t))) return;
-      await field(wrapOf(form.notes), { input: form.notes, t, validate: () => form.notes.value.trim(), err: 'Please list at least one more flight.' });
-    } else {
-      if (!live(await say('Anything else I should know? Flexible dates, a preferred airline, special requests…', t))) return;
-      await field(wrapOf(form.notes), { input: form.notes, t, optional: true, skipLabel: "No, that's all" });
-    }
-    if (t !== chatToken) return;
-
     if (!live(await say("Perfect. What's your full name?", t))) return;
     await nameField(t);
     if (t !== chatToken) return;
@@ -1766,6 +1864,7 @@
     await field(wrapOf(form.phone), { input: form.phone, t, optional: true });
     if (t !== chatToken) return;
 
+    if (promoOn && !live(await say(`🎁 Good news: it's Black Friday! I've added code <b>${PROMO}</b> to your request: <b>$200 off</b> your booking, when you book by December 1.`, t))) return;
     if (!live(await say("Here's your request. Shall I send it to Joe?", t))) return;
     lastQuick = false;
     showSummary(summaryRows(false));
@@ -1860,19 +1959,72 @@
     const card = document.getElementById('alertCard');
     const af = document.getElementById('alertForm');
     const am = document.getElementById('alertMsg');
+    // Airport suggestions, same as in the request window.
+    const aFrom = document.getElementById('aFrom'), aTo = document.getElementById('aTo');
+    setupAC(aFrom); setupAC(aTo);
+    aFrom.addEventListener('picked', () => aTo.focus());
+    aTo.addEventListener('picked', () => { if (!aDep) openA(); });
+
+    // Date grid: tap a departure, then (optionally) a return. "Any dates" keeps the alert open-ended.
     const when = document.getElementById('aWhen');
-    const d0 = new Date();
-    for (let k = 0; k < 12; k++) {
-      const m = new Date(d0.getFullYear(), d0.getMonth() + k, 1);
-      when.add(new Option(m.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })));
+    const aBtn = document.getElementById('aWhenBtn'), aCal = document.getElementById('aCal');
+    let aDep = '', aRet = '', aView = null;
+    const aText = () => aDep ? short(aDep) + (aRet ? ' → ' + short(aRet) : ' (one way / return open)') : 'Flexible / any time';
+    function aSync() {
+      when.value = aText();
+      aBtn.innerHTML = `<span${aDep ? '' : ' style="color:#7d8a9a"'}>${aDep ? esc(short(aDep) + (aRet ? ' → ' + short(aRet) : '')) : 'Any dates'}</span>` + ICON_CAL;
+      aBtn.classList.toggle('on', !aCal.hidden);
     }
+    function aRender() {
+      const months = window.innerWidth >= 720 ? 2 : 1;
+      const first = parse(today); first.setDate(1);
+      const last = parse(maxDate); last.setDate(1);
+      const canPrev = aView > first, canNext = new Date(aView.getFullYear(), aView.getMonth() + months, 1) <= last;
+      const picking = aDep && !aRet ? 'Select return (optional)' : 'Select departure';
+      let h = `<div class="cal-top"><span class="cal-step">${picking}</span><span class="cal-nav"><button type="button" data-nav="-1" aria-label="Previous month" ${canPrev ? '' : 'disabled'}>‹</button><button type="button" data-nav="1" aria-label="Next month" ${canNext ? '' : 'disabled'}>›</button></span></div><div class="cal-months">`;
+      for (let k = 0; k < months; k++) {
+        const m = new Date(aView.getFullYear(), aView.getMonth() + k, 1);
+        const days = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+        h += `<div class="cal-m"><h4>${m.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h4><div class="cal-grid">`
+          + ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(w => `<span class="wd">${w}</span>`).join('') + '<span></span>'.repeat(m.getDay());
+        for (let d = 1; d <= days; d++) {
+          const s = iso(new Date(m.getFullYear(), m.getMonth(), d));
+          const cls = ['d', s === today && 'today', s === aDep && 'start', s === aRet && 'end', aDep && aRet && s > aDep && s < aRet && 'in'].filter(Boolean).join(' ');
+          h += `<button type="button" class="${cls}" data-d="${s}" ${s < today || s > maxDate ? 'disabled' : ''} aria-label="${nice(s)}">${d}</button>`;
+        }
+        h += '</div></div>';
+      }
+      h += `</div><div class="cal-foot"><button type="button" class="clear" data-a="any">Any dates</button><button type="button" class="cal-done" data-a="done">Done</button></div>`;
+      aCal.innerHTML = h;
+    }
+    function openA() { const b = parse(aDep || today); aView = new Date(b.getFullYear(), b.getMonth(), 1); aCal.hidden = false; aRender(); aSync(); }
+    function closeA() { aCal.hidden = true; aSync(); }
+    aBtn.addEventListener('click', () => aCal.hidden ? openA() : closeA());
+    aCal.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b || b.disabled) return;
+      if (b.dataset.d) {
+        const s = b.dataset.d;
+        if (!aDep || aRet || s <= aDep) { aDep = s; aRet = ''; } else aRet = s;
+        aRender(); aSync();
+        if (aRet) setTimeout(closeA, 250);
+      } else if (b.dataset.nav) { aView = new Date(aView.getFullYear(), aView.getMonth() + Number(b.dataset.nav), 1); aRender(); }
+      else if (b.dataset.a === 'any') { aDep = aRet = ''; closeA(); }
+      else if (b.dataset.a === 'done') closeA();
+    });
+    document.addEventListener('mousedown', e => { if (!aCal.hidden && !e.target.closest('.aw')) closeA(); });
+    aCal.addEventListener('keydown', e => { if (e.key === 'Escape') { closeA(); aBtn.focus(); } });
+    aSync();
+
     af.addEventListener('focusin', () => track('alert_start'), { once: true });
     af.addEventListener('submit', async e => {
       e.preventDefault();
       am.textContent = '';
       const f = Object.fromEntries(new FormData(af));
+      // Read the box directly and trim it: browser autofill can leave stray spaces that a strict check rejects.
+      f.email = document.getElementById('aEmail').value.trim();
       if (!f.to.trim()) { am.textContent = 'Where would you like to fly? Type a city or country.'; af.to.focus(); return; }
-      if (!f.email.trim() || !af.email.checkValidity()) { am.textContent = 'Please enter a valid email address.'; af.email.focus(); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) { am.textContent = f.email ? 'Please check your email address.' : 'Please type your email address.'; af.email.focus(); return; }
       const btn = af.querySelector('button[type="submit"]');
       btn.disabled = true; btn.textContent = 'Saving…';
       const d = new Date();
@@ -1901,7 +2053,7 @@
         }).catch(() => {});
         track('alert_sent');
         flushEv();
-        document.getElementById('alertOk').innerHTML = `Done! I'll watch <b>${esc(route)}</b> (${esc(f.when.toLowerCase())}) and email you when a good fare appears.<br>Need options right now? <a href="#" data-open-quote-alert style="color:var(--gold-2)">Request a quote</a>.`;
+        document.getElementById('alertOk').innerHTML = `Done! I'll watch <b>${esc(route)}</b> (${esc(aDep ? f.when : f.when.toLowerCase())}) and email you when a good fare appears.<br>Need options right now? <a href="#" data-open-quote-alert style="color:var(--gold-2)">Request a quote</a>.`;
         card.classList.add('sent');
         hideNudge();
       } catch {
