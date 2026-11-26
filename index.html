@@ -1310,8 +1310,16 @@
     if (closed) return;
     const tg = b.el;
     tg.hidden = false; track(b.key + '_shown');
-    const place = () => { hdr.style.top = tg.hidden ? '' : tg.offsetHeight + 'px'; };
-    place(); addEventListener('resize', place);
+    // The site's menu bar is fixed to the screen. Keep it just below the big banner at the top of the page,
+    // and just below the slim offer bar once the big banner has scrolled away.
+    let mini = null;
+    const place = () => {
+      if (tg.hidden) { hdr.style.top = ''; if (mini) mini.classList.remove('show'); return; }
+      const past = scrollY > tg.offsetTop + tg.offsetHeight - 4;
+      if (mini) mini.classList.toggle('show', past);
+      hdr.style.top = (past && mini ? mini.offsetHeight : Math.max(0, tg.offsetHeight - scrollY)) + 'px';
+    };
+    addEventListener('resize', place); addEventListener('scroll', place, { passive: true });
     const go = tg.querySelector('.tg-go');
     const addCode = () => setTimeout(() => { if (form.notes && !form.notes.value.includes(go.dataset.code)) form.notes.value = (go.dataset.codeNote + ' ' + form.notes.value).trim(); }, 400);
     if (b.key === 'tg') {
@@ -1350,7 +1358,7 @@
     }
 
     // Slim bar that stays on top of the screen while scrolling, once the big banner is out of view.
-    const mini = document.createElement('div');
+    mini = document.createElement('div');
     mini.className = 'tg-mini' + (b.key === 'xmas' ? ' xmas' : '');
     mini.setAttribute('role', 'region'); mini.setAttribute('aria-label', tg.getAttribute('aria-label'));
     mini.innerHTML = b.key === 'xmas'
@@ -1358,10 +1366,9 @@
       : '<span>🦃 <b>$500 OFF</b> British Airways<span class="hide-sm"> business class</span> · <span class="tg-code">THANKS500</span></span><button class="go" type="button">Get my fare &rarr;</button><button class="x" type="button" aria-label="Close offer">&times;</button>';
     document.body.appendChild(mini);
     mini.querySelector('.go').addEventListener('click', () => { track(b.key + '_mini_click'); go.click(); });
-    const syncMini = () => mini.classList.toggle('show', !tg.hidden && scrollY > tg.offsetTop + tg.offsetHeight);
-    addEventListener('scroll', syncMini, { passive: true }); syncMini();
+    place();
 
-    const closeAll = () => { tg.hidden = true; mini.remove(); place(); try { sessionStorage.setItem(b.key + 'Closed', '1'); } catch {} };
+    const closeAll = () => { tg.hidden = true; mini.remove(); mini = null; place(); try { sessionStorage.setItem(b.key + 'Closed', '1'); } catch {} };
     tg.querySelector('.tg-x').addEventListener('click', closeAll);
     mini.querySelector('.x').addEventListener('click', closeAll);
   })();
