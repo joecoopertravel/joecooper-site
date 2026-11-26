@@ -714,9 +714,54 @@
     .rise,.reveal{opacity:1;transform:none}
     .plane{display:none}
   }
+  /* ---------- Thanksgiving banner (Joe, 2026-11-26): $500 off BA business with THANKS500, until Dec 1 ---------- */
+  .tg{position:relative;z-index:20;color:#fff;text-align:center;padding:18px 48px 18px;
+      background:linear-gradient(100deg,#7a2e0e 0%,#a8461a 35%,#c9772b 70%,#d4a853 100%);box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .tg[hidden]{display:none}
+  .tg .tg-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap}
+  .tg .tg-in > div{flex:1 1 260px;min-width:0;overflow-wrap:break-word}
+  .tg .tg-eyebrow{font:600 12px Inter,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#ffe7b8}
+  .tg h2{font:600 clamp(22px,3.4vw,34px)/1.15 "Cormorant Garamond",Georgia,serif;margin:4px 0 4px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+  .tg h2 b{font-family:Oswald,sans-serif;font-weight:600;letter-spacing:.02em;color:#fff6dc}
+  .tg p{margin:0;font-size:14px;color:#fff1d6}
+  .tg .tg-code{display:inline-block;margin:0 4px;padding:2px 10px;border:2px dashed #fff3c4;border-radius:6px;font:600 15px Oswald,sans-serif;letter-spacing:.14em;color:#fff}
+  .tg .tg-go{border:0;cursor:pointer;background:#0b1726;color:#ffe2a3;font:600 15px Inter,sans-serif;padding:14px 24px;border-radius:8px;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+  .tg .tg-go:hover{background:#13243a}
+  .tg .tg-x{position:absolute;top:8px;right:12px;background:none;border:0;color:#fff;font-size:24px;line-height:1;cursor:pointer;opacity:.8}
+  .tg .tg-leaf{font-size:30px}
+  .tg.xmas{background:linear-gradient(100deg,#0f3d2a 0%,#14543a 40%,#8f1d22 75%,#b3262c 100%)}
+  .tg.xmas .tg-eyebrow{color:#ffe3e3}
+  .tg.xmas .tg-go{color:#ffd9a0}
+  @media(max-width:600px){.tg{padding:16px 40px 16px 16px}.tg .tg-leaf{display:none}.tg .tg-go{width:100%}}
 </style>
 </head>
 <body>
+
+<div class="tg" id="tgBanner" hidden role="region" aria-label="Thanksgiving offer">
+  <button class="tg-x" type="button" aria-label="Close offer">&times;</button>
+  <div class="tg-in">
+    <span class="tg-leaf" aria-hidden="true">🦃</span>
+    <div>
+      <div class="tg-eyebrow">Happy Thanksgiving</div>
+      <h2><b>$500 OFF</b> British Airways business class</h2>
+      <p>London, Dublin &amp; Europe · nonstop &amp; one-stop from the US · trips back by Jan 31 · code <span class="tg-code">THANKS500</span> · book by Nov 29</p>
+    </div>
+    <button class="tg-go" type="button" data-open-quote data-to="London" data-code="THANKS500" data-code-note="Promo code THANKS500 (British Airways).">Get my BA fare &rarr;</button>
+  </div>
+</div>
+
+<div class="tg xmas" id="xmasBanner" hidden role="region" aria-label="Christmas offer">
+  <button class="tg-x" type="button" aria-label="Close offer">&times;</button>
+  <div class="tg-in">
+    <span class="tg-leaf" aria-hidden="true">🎅</span>
+    <div>
+      <div class="tg-eyebrow">Merry Christmas from Joe</div>
+      <h2><b>$150</b> Santa voucher on your business class trip</h2>
+      <p>Any destination · business or first class · code <span class="tg-code">SANTA150</span> · book by Dec 31</p>
+    </div>
+    <button class="tg-go" type="button" data-open-quote data-code="SANTA150" data-code-note="Santa voucher SANTA150.">Use my Santa voucher &rarr;</button>
+  </div>
+</div>
 
 <header>
   <div class="wrap">
@@ -1201,6 +1246,32 @@
   const maxDate = addDays(today, 365);
   // Black Friday offer: $200 off with code JOE200 for bookings made by Dec 1, 2026. Hides itself afterwards.
   const PROMO = 'JOE200', promoOn = today <= '2026-12-01';
+  // Seasonal banners (Joe, 2026-11-26):
+  //  - Thanksgiving: $500 off British Airways business class, code THANKS500, shown until Nov 29 (removed on Nov 30)
+  //  - Christmas: $150 Santa voucher, code SANTA150, shown Dec 1 - Dec 31
+  (function () {
+    const hdr = document.querySelector('header');
+    const banners = [
+      { el: document.getElementById('tgBanner'), on: today <= '2026-11-29', key: 'tg' },
+      { el: document.getElementById('xmasBanner'), on: today >= '2026-12-01' && today <= '2026-12-31', key: 'xmas' }
+    ];
+    const b = banners.find(x => x.on);
+    if (!b) return;
+    let closed = false;
+    try { closed = !!sessionStorage.getItem(b.key + 'Closed'); } catch {}
+    if (closed) return;
+    const tg = b.el;
+    tg.hidden = false; track(b.key + '_shown');
+    const place = () => { hdr.style.top = tg.hidden ? '' : tg.offsetHeight + 'px'; };
+    place(); addEventListener('resize', place);
+    tg.querySelector('.tg-x').addEventListener('click', () => { tg.hidden = true; place(); try { sessionStorage.setItem(b.key + 'Closed', '1'); } catch {} });
+    const go = tg.querySelector('.tg-go');
+    go.addEventListener('click', () => {
+      track(b.key + '_click');
+      // The code travels with the request, so Joe sees it in Telegram.
+      setTimeout(() => { if (form.notes && !form.notes.value.includes(go.dataset.code)) form.notes.value = (go.dataset.codeNote + ' ' + form.notes.value).trim(); }, 400);
+    });
+  })();
   // Pop-up: 5 seconds after the page opens, once per visit, never on top of the request window
   // or for visitors arriving from an email link that opens the chat straight away.
   (function () {
