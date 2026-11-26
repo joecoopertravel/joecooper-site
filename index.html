@@ -744,7 +744,7 @@
     <div>
       <div class="tg-eyebrow">Happy Thanksgiving</div>
       <h2><b>$500 OFF</b> British Airways business class</h2>
-      <p>London, Dublin &amp; Europe · nonstop &amp; one-stop from the US · trips back by Jan 31 · code <span class="tg-code">THANKS500</span> · book by Nov 29</p>
+      <p>London, Dublin &amp; Europe · nonstop &amp; one-stop from the US · trips back by Jan 31 · code <span class="tg-code">THANKS500</span> · book by Nov 30</p>
     </div>
     <button class="tg-go" type="button" data-open-quote data-to="London" data-code="THANKS500" data-code-note="Promo code THANKS500 (British Airways).">Get my BA fare &rarr;</button>
   </div>
@@ -1247,12 +1247,12 @@
   // Black Friday offer: $200 off with code JOE200 for bookings made by Dec 1, 2026. Hides itself afterwards.
   const PROMO = 'JOE200', promoOn = today <= '2026-12-01';
   // Seasonal banners (Joe, 2026-11-26):
-  //  - Thanksgiving: $500 off British Airways business class, code THANKS500, shown until Nov 29 (removed on Nov 30)
-  //  - Christmas: $150 Santa voucher, code SANTA150, shown Dec 1 - Dec 31
+  //  - Thanksgiving: $500 off one British Airways business booking, trips back by Jan 31, code THANKS500, booked by Nov 30 (shown until Nov 30)
+  //  - Christmas: $150 Santa voucher off one business/first booking, code SANTA150, booked by Dec 31 (shown Dec 1 - Dec 31)
   (function () {
     const hdr = document.querySelector('header');
     const banners = [
-      { el: document.getElementById('tgBanner'), on: today <= '2026-11-29', key: 'tg' },
+      { el: document.getElementById('tgBanner'), on: today <= '2026-11-30', key: 'tg' },
       { el: document.getElementById('xmasBanner'), on: today >= '2026-12-01' && today <= '2026-12-31', key: 'xmas' }
     ];
     const b = banners.find(x => x.on);
