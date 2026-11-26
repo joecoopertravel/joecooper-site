@@ -722,13 +722,45 @@
   .tg .tg-in > div{flex:1 1 260px;min-width:0;overflow-wrap:break-word}
   .tg .tg-eyebrow{font:600 12px Inter,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#ffe7b8}
   .tg h2{font:600 clamp(22px,3.4vw,34px)/1.15 "Cormorant Garamond",Georgia,serif;margin:4px 0 4px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.25)}
-  .tg h2 b{font-family:Oswald,sans-serif;font-weight:600;letter-spacing:.02em;color:#fff6dc}
+  .tg h2 b{font-family:Oswald,sans-serif;font-weight:700;letter-spacing:.01em;color:#fff8e1;font-size:2em;line-height:1;vertical-align:-0.12em;
+      margin-right:.15em;text-shadow:0 3px 0 rgba(90,30,5,.45),0 0 26px rgba(255,214,140,.55)}
+  .tg h2 b small{font-size:.5em;letter-spacing:.06em;margin-left:.08em}
   .tg p{margin:0;font-size:14px;color:#fff1d6}
   .tg .tg-code{display:inline-block;margin:0 4px;padding:2px 10px;border:2px dashed #fff3c4;border-radius:6px;font:600 15px Oswald,sans-serif;letter-spacing:.14em;color:#fff}
   .tg .tg-go{border:0;cursor:pointer;background:#0b1726;color:#ffe2a3;font:600 15px Inter,sans-serif;padding:14px 24px;border-radius:8px;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.3)}
   .tg .tg-go:hover{background:#13243a}
   .tg .tg-x{position:absolute;top:8px;right:12px;background:none;border:0;color:#fff;font-size:24px;line-height:1;cursor:pointer;opacity:.8}
   .tg .tg-leaf{font-size:30px}
+  /* slim bar that sticks to the top once the big banner has scrolled away */
+  .tg-mini{position:fixed;top:0;left:0;right:0;z-index:45;display:flex;align-items:center;justify-content:center;gap:14px;
+      padding:8px 44px 8px 14px;color:#fff;font:500 14px Inter,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.3);
+      background:linear-gradient(100deg,#7a2e0e 0%,#a8461a 40%,#c9772b 75%,#d4a853 100%);
+      transform:translateY(-110%);transition:transform .3s ease}
+  .tg-mini.show{transform:none}
+  .tg-mini.xmas{background:linear-gradient(100deg,#0f3d2a 0%,#14543a 40%,#8f1d22 75%,#b3262c 100%)}
+  .tg-mini b{font-family:Oswald,sans-serif;font-weight:700;letter-spacing:.02em;font-size:22px;vertical-align:-2px;text-shadow:0 0 14px rgba(255,214,140,.5)}
+  @media(max-width:600px){.tg-mini b{font-size:18px}}
+  .tg-mini .tg-code{display:inline-block;padding:1px 8px;border:1.5px dashed #fff3c4;border-radius:5px;font:600 13px Oswald,sans-serif;letter-spacing:.12em}
+  .tg-mini button.go{border:0;cursor:pointer;background:#0b1726;color:#ffe2a3;font:600 13px Inter,sans-serif;padding:7px 14px;border-radius:6px;white-space:nowrap}
+  .tg-mini .x{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;font-size:20px;cursor:pointer;opacity:.85}
+  @media(max-width:600px){.tg-mini{font-size:12.5px;gap:8px;padding:7px 36px 7px 10px}.tg-mini .hide-sm{display:none}.tg-mini button.go{padding:6px 10px;font-size:12px}}
+  .balead{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,12,22,.72)}
+  .balead[hidden]{display:none}
+  .balead-box{position:relative;width:420px;max-width:100%;background:#fff;border-radius:14px;padding:26px 24px 22px;box-shadow:0 24px 70px rgba(0,0,0,.45);font-family:Inter,sans-serif;color:#18202c}
+  .balead-x{position:absolute;top:8px;right:12px;background:none;border:0;font-size:26px;line-height:1;cursor:pointer;color:#5d6675}
+  .balead-tag{display:inline-block;font:600 12px Inter,sans-serif;letter-spacing:.06em;color:#7a2e0e;background:#fbeee0;border-radius:20px;padding:5px 12px}
+  .balead h3{font:600 24px/1.2 "Cormorant Garamond",Georgia,serif;margin:12px 0 6px;text-transform:none;letter-spacing:0;color:#0b1726}
+  .balead h3 b{font:700 40px/1 Oswald,sans-serif;color:#a8461a;vertical-align:-4px;margin-right:4px}
+  .balead-sub{font-size:14px;color:#5d6675;margin:0 0 16px;line-height:1.5}
+  .balead label{display:block;font-size:13px;font-weight:600;color:#0b1726;margin-bottom:12px}
+  .balead input[type=email],.balead input[type=tel]{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #d5dbe4;border-radius:8px;font:16px Inter,sans-serif;color:#18202c}
+  .balead input:focus{outline:none;border-color:#d4a853}
+  .balead-go{width:100%;border:0;cursor:pointer;margin-top:4px;padding:14px;border-radius:8px;background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#0b1726;font:700 16px Inter,sans-serif}
+  .balead-go:disabled{opacity:.6;cursor:default}
+  .balead-msg{min-height:18px;margin:8px 0 0;font-size:13px;color:#b3262c}
+  .balead-ok{display:none;text-align:center;font-size:15px;line-height:1.6;padding:8px 0 4px}
+  .balead-box.sent > :not(.balead-ok):not(.balead-x):not(.balead-tag){display:none}
+  .balead-box.sent .balead-ok{display:block}
   .tg.xmas{background:linear-gradient(100deg,#0f3d2a 0%,#14543a 40%,#8f1d22 75%,#b3262c 100%)}
   .tg.xmas .tg-eyebrow{color:#ffe3e3}
   .tg.xmas .tg-go{color:#ffd9a0}
@@ -743,11 +775,27 @@
     <span class="tg-leaf" aria-hidden="true">🦃</span>
     <div>
       <div class="tg-eyebrow">Happy Thanksgiving</div>
-      <h2><b>$500 OFF</b> British Airways business class</h2>
+      <h2><b>$500<small>OFF</small></b> British Airways business class</h2>
       <p>London, Dublin &amp; Europe · nonstop &amp; one-stop from the US · trips back by Jan 31 · code <span class="tg-code">THANKS500</span> · book by Nov 30</p>
     </div>
-    <button class="tg-go" type="button" data-open-quote data-to="London" data-code="THANKS500" data-code-note="Promo code THANKS500 (British Airways).">Get my BA fare &rarr;</button>
+    <button class="tg-go" type="button" data-code="THANKS500" data-code-note="Promo code THANKS500 (British Airways).">Get my BA fare &rarr;</button>
   </div>
+</div>
+
+<!-- BA promo: short lead form, email + phone only (Joe, 2026-11-26) -->
+<div class="balead" id="baLead" hidden role="dialog" aria-modal="true" aria-labelledby="baLeadTitle">
+  <form class="balead-box" id="baLeadForm" novalidate>
+    <button class="balead-x" type="button" aria-label="Close">&times;</button>
+    <div class="balead-tag">🦃 Thanksgiving · code THANKS500</div>
+    <h3 id="baLeadTitle"><b>$500</b> off British Airways business class</h3>
+    <p class="balead-sub">London, Dublin &amp; Europe from the US · trips back by Jan 31 · book by Nov 30.<br>Leave your email and phone, and Joe will send you the fare today.</p>
+    <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+    <label>Email<input type="email" name="email" required autocomplete="email" placeholder="you@example.com"></label>
+    <label>Phone<input type="tel" name="phone" required autocomplete="tel" placeholder="(555) 123-4567"></label>
+    <button class="balead-go" type="submit">Claim my $500 off &rarr;</button>
+    <p class="balead-msg" aria-live="polite"></p>
+    <div class="balead-ok"><b>Thank you!</b><br>Joe will contact you shortly with your British Airways fare. Your code <b>THANKS500</b> is saved with your request.</div>
+  </form>
 </div>
 
 <div class="tg xmas" id="xmasBanner" hidden role="region" aria-label="Christmas offer">
@@ -1264,13 +1312,58 @@
     tg.hidden = false; track(b.key + '_shown');
     const place = () => { hdr.style.top = tg.hidden ? '' : tg.offsetHeight + 'px'; };
     place(); addEventListener('resize', place);
-    tg.querySelector('.tg-x').addEventListener('click', () => { tg.hidden = true; place(); try { sessionStorage.setItem(b.key + 'Closed', '1'); } catch {} });
     const go = tg.querySelector('.tg-go');
-    go.addEventListener('click', () => {
-      track(b.key + '_click');
-      // The code travels with the request, so Joe sees it in Telegram.
-      setTimeout(() => { if (form.notes && !form.notes.value.includes(go.dataset.code)) form.notes.value = (go.dataset.codeNote + ' ' + form.notes.value).trim(); }, 400);
-    });
+    const addCode = () => setTimeout(() => { if (form.notes && !form.notes.value.includes(go.dataset.code)) form.notes.value = (go.dataset.codeNote + ' ' + form.notes.value).trim(); }, 400);
+    if (b.key === 'tg') {
+      // BA promo: a short form with email + phone only (Joe, 2026-11-26), sent to email (Web3Forms) and Telegram (worker).
+      const lead = document.getElementById('baLead'), lf = document.getElementById('baLeadForm'), lmsg = lf.querySelector('.balead-msg'), lbtn = lf.querySelector('.balead-go');
+      const openLead = () => { track('tg_click'); lead.hidden = false; document.body.classList.add('modal-open'); setTimeout(() => lf.email.focus(), 50); };
+      const closeLead = () => { lead.hidden = true; document.body.classList.remove('modal-open'); };
+      go.addEventListener('click', openLead);
+      lead.addEventListener('click', e => { if (e.target === lead || e.target.closest('.balead-x')) closeLead(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !lead.hidden) closeLead(); });
+      lf.addEventListener('submit', async e => {
+        e.preventDefault();
+        const email = lf.email.value.trim(), phone = lf.phone.value.trim();
+        if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) { lmsg.textContent = 'Please enter a valid email.'; lf.email.focus(); return; }
+        if (phone.replace(/\D/g, '').length < 7) { lmsg.textContent = 'Please enter your phone number.'; lf.phone.focus(); return; }
+        if (lf.website.value) { lf.classList.add('sent'); return; }   // bot
+        lmsg.textContent = ''; lbtn.disabled = true; lbtn.textContent = 'Sending…';
+        const d = new Date(), p2 = n => String(n).padStart(2, '0');
+        const ref = 'BA-' + p2(d.getMonth() + 1) + p2(d.getDate()) + '-' + p2(d.getHours()) + p2(d.getMinutes()) + p2(d.getSeconds());
+        const fields = { reference: ref, from: 'Any US city', to: 'London / Dublin / Europe (BA promo)', trip: 'Round trip', travelers: '?', cabin: 'Business',
+          depart: 'Flexible, back by Jan 31', name: 'BA promo lead', email, phone, promo: 'THANKS500 ($500 off BA business, book by Nov 30)',
+          notes: '🦃 THANKS500 $500 off British Airways business · left only email + phone: call or email them with the fare' };
+        try {
+          const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(Object.assign({ access_key: '11c0cf65-a965-4383-a2c8-1908f6f634d3', subject: `BA promo lead ${ref} · THANKS500 · ${phone}`, from_name: 'joecooper.travel', replyto: email }, fields)) });
+          const j = await r.json(); if (!j.success) throw new Error('web3forms');
+          fetch('https://joecooper-leads.sales-41f.workers.dev/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(fields), keepalive: true }).catch(() => {});
+          track('tg_lead_sent'); flushEv();
+          lf.classList.add('sent');
+        } catch {
+          lmsg.textContent = 'Something went wrong. Please call (630) 566-5249 or email sales@joecooper.travel.';
+        } finally { lbtn.disabled = false; lbtn.textContent = 'Claim my $500 off →'; }
+      });
+    } else {
+      go.addEventListener('click', () => { track(b.key + '_click'); addCode(); });   // the code travels with the request, so Joe sees it in Telegram
+    }
+
+    // Slim bar that stays on top of the screen while scrolling, once the big banner is out of view.
+    const mini = document.createElement('div');
+    mini.className = 'tg-mini' + (b.key === 'xmas' ? ' xmas' : '');
+    mini.setAttribute('role', 'region'); mini.setAttribute('aria-label', tg.getAttribute('aria-label'));
+    mini.innerHTML = b.key === 'xmas'
+      ? '<span>🎅 <b>$150 Santa voucher</b><span class="hide-sm"> on business class</span> · <span class="tg-code">SANTA150</span></span><button class="go" type="button">Use it &rarr;</button><button class="x" type="button" aria-label="Close offer">&times;</button>'
+      : '<span>🦃 <b>$500 OFF</b> British Airways<span class="hide-sm"> business class</span> · <span class="tg-code">THANKS500</span></span><button class="go" type="button">Get my fare &rarr;</button><button class="x" type="button" aria-label="Close offer">&times;</button>';
+    document.body.appendChild(mini);
+    mini.querySelector('.go').addEventListener('click', () => { track(b.key + '_mini_click'); go.click(); });
+    const syncMini = () => mini.classList.toggle('show', !tg.hidden && scrollY > tg.offsetTop + tg.offsetHeight);
+    addEventListener('scroll', syncMini, { passive: true }); syncMini();
+
+    const closeAll = () => { tg.hidden = true; mini.remove(); place(); try { sessionStorage.setItem(b.key + 'Closed', '1'); } catch {} };
+    tg.querySelector('.tg-x').addEventListener('click', closeAll);
+    mini.querySelector('.x').addEventListener('click', closeAll);
   })();
   // Pop-up: 5 seconds after the page opens, once per visit, never on top of the request window
   // or for visitors arriving from an email link that opens the chat straight away.
