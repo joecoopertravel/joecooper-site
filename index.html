@@ -706,6 +706,15 @@
   .nudge .nx{position:absolute;top:8px;right:10px;background:none;border:0;color:#9fb0c4;font-size:22px;line-height:1;cursor:pointer;padding:0 2px}
   .nudge .nx:hover{color:#fff}
   @media(max-width:600px){.nudge{left:12px;right:96px;width:auto;bottom:calc(16px + env(safe-area-inset-bottom));padding:16px 16px 14px;font-size:14px}}
+  /* bigger fare-alert box (Joe, 2026-11-27) */
+  .nudge{width:430px;gap:14px;padding:28px 28px 26px;font-size:19px;border-left-width:5px;border-radius:14px}
+  .nudge .n-head{gap:14px;padding-right:30px}
+  .nudge .n-head strong{font-size:22px}
+  .nudge .n-bell{width:50px;height:50px}
+  .nudge .n-bell svg{width:25px;height:25px}
+  .nudge .btn{padding:17px 22px;font-size:19px;margin-top:6px}
+  .nudge .nx{top:10px;right:14px;font-size:30px}
+  @media(max-width:600px){.nudge{width:auto;gap:10px;padding:18px 18px 16px;font-size:16px}.nudge .n-head strong{font-size:17px}.nudge .n-bell{width:40px;height:40px}.nudge .n-bell svg{width:20px;height:20px}.nudge .btn{padding:14px 16px;font-size:16px}.nudge .nx{font-size:26px}}
 
   @media (prefers-reduced-motion: reduce){
     .reveal{filter:none}
