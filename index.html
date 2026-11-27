@@ -1300,7 +1300,10 @@
   const today = iso(new Date());
   const maxDate = addDays(today, 365);
   // Black Friday offer: $200 off with code JOE200 for bookings made by Dec 1, 2026. Hides itself afterwards.
-  const PROMO = 'JOE200', promoOn = today <= '2026-12-01';
+  // Paused by Joe on 2026-11-27 ("turn 200 off for now") so the THANKS500 bar gets full attention:
+  // no pop-up, no code added to requests or the chat. Set bfPaused = false to bring it back.
+  const bfPaused = true;
+  const PROMO = 'JOE200', promoOn = !bfPaused && today <= '2026-12-01';
   // Seasonal banners (Joe, 2026-11-26):
   //  - Thanksgiving: $500 off one British Airways business booking, trips back by Jan 31, code THANKS500, booked by Nov 30 (shown until Nov 30)
   //  - Christmas: $150 Santa voucher off one business/first booking, code SANTA150, booked by Dec 31 (shown Dec 1 - Dec 31)
