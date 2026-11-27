@@ -426,6 +426,9 @@
   .grid-err:empty{display:none}
   .grid-go{width:100%;justify-content:center;margin-top:10px;padding:14px;font:600 15px Oswald,sans-serif;letter-spacing:.18em;text-transform:uppercase}
   .grid-go svg{width:18px;height:18px}
+  .grid-alt{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;margin-top:12px;color:var(--muted);font-size:14px}
+  .grid-alt .linkish{font-size:14px}
+  .grid-alt .grid-call{color:#8a6a2a;font-weight:600;text-decoration:none}
   .qr.prefs{margin-bottom:10px}
   .qr.prefs button{padding:7px 14px;font-size:13px}
   .qr.prefs button.on{background:#f6efe0}
@@ -1681,8 +1684,8 @@
         bad.focus();
         return;
       }
-      if (!dep.value) { msg.textContent = 'Please choose your departure date.'; openCal('depart'); return; }
-      if (form.trip.value === 'Round trip' && !ret.value) { msg.textContent = 'Please choose a return date.'; openCal('return'); return; }
+      if (!dep.value && !datesUnsure) { msg.textContent = 'Please choose your departure date.'; openCal('depart'); return; }
+      if (form.trip.value === 'Round trip' && !ret.value && !datesUnsure) { msg.textContent = 'Please choose a return date.'; openCal('return'); return; }
     }
     const btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
@@ -1702,6 +1705,7 @@
         if (!answered.has('travelers')) fields.travelers = '?';
         if (!answered.has('cabin')) fields.cabin = '?';
       }
+      if (datesUnsure && !dep.value) fields.notes = '📅 Dates: not sure yet (flexible)' + (fields.notes ? ' · ' + fields.notes : '');
       // Black Friday: the code goes with the request (email field, and in the notes so the Telegram alert shows it too).
       if (promoOn) {
         fields.promo = `${PROMO} ($200 off, Black Friday, book by Dec 1)`;
@@ -1970,10 +1974,13 @@
   }
   // Which chat questions were really answered, so untouched defaults (2 pax, Business) aren't sent as if chosen.
   const answered = new Set();
+  // "Not sure of dates yet" on the first screen (Joe, 2026-11-27): every visitor who opened the form last week
+  // left at the dates step, so dates are optional there and the request says "not sure yet".
+  let datesUnsure = false;
   function summaryRows(quick) {
     const has = k => !quick || answered.has(k);
     const route = form.from.value.trim() || form.to.value.trim() ? `${form.from.value.trim() || '?'} → ${form.to.value.trim() || '?'}` : '';
-    return [has('trip') && ['Trip', form.trip.value], route && ['Route', route], dep.value && ['Dates', datesText()],
+    return [has('trip') && ['Trip', form.trip.value], route && ['Route', route], dep.value ? ['Dates', datesText()] : (datesUnsure && ['Dates', 'Not sure yet, flexible']),
       has('travelers') && ['Travelers', form.travelers.value], has('cabin') && ['Cabin', form.cabin.value],
       form.budget.value.trim() && ['Budget', form.budget.value.trim()], form.notes.value.trim() && ['Notes', form.notes.value.trim()],
       ['Name', form.name.value.trim()], ['Email', form.email.value.trim()], form.phone.value.trim() && ['Phone', form.phone.value.trim()],
@@ -1992,7 +1999,12 @@
       g.append(tripEl, wrapOf(form.from), wrapOf(form.to), datesEl, wrapOf(form.travelers), wrapOf(form.cabin));
       const err = document.createElement('p'); err.className = 'grid-err'; err.setAttribute('role', 'alert');
       const go = document.createElement('button'); go.type = 'button'; go.className = 'btn btn-gold grid-go'; go.innerHTML = 'Continue ' + ICON_GO;
-      composer.append(g, err, go);
+      // Easy ways out of the grid, so nobody leaves just because they don't know dates or don't like forms.
+      const alt = document.createElement('div'); alt.className = 'grid-alt';
+      alt.innerHTML = '<button type="button" class="linkish" data-unsure>Not sure of dates yet</button><span aria-hidden="true">·</span>' +
+        '<button type="button" class="linkish" data-words>Just tell Joe in a few words</button><span aria-hidden="true">·</span>' +
+        '<a class="linkish grid-call" href="tel:+16305665249" data-call>📞 Call Joe (630) 566-5249</a>';
+      composer.append(g, err, go, alt);
       renderFields();
       reqNow.hidden = true;   // one clear button while the grid is open
       gridAC = new AbortController();
@@ -2007,14 +2019,18 @@
         err.textContent = '';
         if (!form.from.value.trim()) { err.textContent = 'Where are you flying from? Type a city or airport.'; form.from.focus(); return; }
         if (!form.to.value.trim()) { err.textContent = 'Where would you like to go? Type a city or airport.'; form.to.focus(); return; }
-        if (!dep.value) { err.textContent = 'Please pick your departure date.'; openCal('depart'); return; }
-        if (round && !ret.value) { err.textContent = 'Please pick your return date.'; openCal('return'); return; }
+        if (!dep.value && !datesUnsure) { err.textContent = 'Please pick your departure date, or tap "Not sure of dates yet".'; openCal('depart'); return; }
+        if (round && !ret.value && !datesUnsure) { err.textContent = 'Please pick your return date, or tap "Not sure of dates yet".'; openCal('return'); return; }
         ['trip', 'travelers', 'cabin'].forEach(k => answered.add(k));
         const pax = form.travelers.value;
-        const text = `${form.trip.value}: ${form.from.value.trim()} → ${form.to.value.trim()}, ${datesText()} · ${pax} traveler${pax === '1' ? '' : 's'}, ${form.cabin.value}`;
+        const when = dep.value ? datesText() : 'dates flexible';
+        const text = `${form.trip.value}: ${form.from.value.trim()} → ${form.to.value.trim()}, ${when} · ${pax} traveler${pax === '1' ? '' : 's'}, ${form.cabin.value}`;
         closeCal(); clearComposer(); reqNow.hidden = false; addMe(text); res(text);
       }
       go.addEventListener('click', next, on);
+      alt.querySelector('[data-unsure]').addEventListener('click', () => { datesUnsure = true; track('grid_unsure'); closeCal(); next(); }, on);
+      alt.querySelector('[data-words]').addEventListener('click', () => { track('grid_words'); quickRequest(); }, on);
+      alt.querySelector('[data-call]').addEventListener('click', () => track('call_click'), on);
       [form.from, form.to].forEach(inp => inp.addEventListener('keydown', e => {
         if (e.key === 'Enter' && inp.getAttribute('aria-expanded') !== 'true') { e.preventDefault(); next(); }
       }, on));
@@ -2049,6 +2065,7 @@
     const t = ++chatToken;
     chatStarted = true;
     answered.clear();
+    datesUnsure = false;
     clearComposer(); chatLog.innerHTML = ''; msg.textContent = '';
     reqNow.hidden = false;
     const live = ok => ok && t === chatToken;
